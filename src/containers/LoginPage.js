@@ -81,8 +81,8 @@ const LoginPage = () => {
 
             <form>
               <TextField
-                hintText="E-mail"
-                floatingLabelText="E-mail"
+                hintText="User Name"
+                floatingLabelText="User Name"
                 fullWidth={true}
               />
               <TextField

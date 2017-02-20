@@ -10,11 +10,11 @@ exports.dbconfig={
   server:'DELL-PC',
   user:'sa',
   password:'M2e2s1a1@123123',
-  database:'IssueTracker' 
+  database:'IssueTracker'
 }*/
 
 // This setting For MongoDb
-exports.dbUrl='mongodb://localhost:27017/IssueTrackerDb';
+exports.dbUrl='mongodb://localhost:27017/issueTrackerDb';
 
 exports.secretkey = 'thisissecretkey';
 

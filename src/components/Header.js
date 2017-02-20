@@ -10,7 +10,6 @@ import {white} from 'material-ui/styles/colors';
 import SearchBox from './SearchBox';
 
 class Header extends React.Component {
-
   render() {
     const {styles, handleChangeRequestNavDrawer} = this.props;
 
