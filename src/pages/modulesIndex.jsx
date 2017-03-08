@@ -1,11 +1,12 @@
 import React,{Component} from 'react'
-import ModuleList from '.././containers/modulesList.jsx'
+import LeftDrawer from '.././containers/modulesList.jsx'
 
 export default class ModuleIndex extends Component{
   render(){
+    console.log('mondule index call');
     return(
       <div>
-        <ModuleList />
+        <LeftDrawer />
       </div>
     )
   }

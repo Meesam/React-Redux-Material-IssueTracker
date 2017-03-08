@@ -1,69 +1,68 @@
-import React ,{Component} from 'react';
-import { render } from 'react-dom';
-import ModulesList from '.././pages/modulesIndex.jsx';
-import AppBar from 'material-ui/AppBar';
-import IconButton from 'material-ui/IconButton';
-import IconMenu from 'material-ui/IconMenu';
-import MenuItem from 'material-ui/MenuItem';
-import FlatButton from 'material-ui/FlatButton';
-import Toggle from 'material-ui/Toggle';
-import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
-import NavigationClose from 'material-ui/svg-icons/navigation/close';
-import SignForm from '.././containers/signInContainer.jsx'; 
-import DefaultPage from '.././staticComponents/default.jsx';
-import assign from 'object-assign';
-import {Layout, Flex, Fixed} from 'react-layout-pane';
+import React, { PropTypes } from 'react';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import Header from '../components/Header';
+import withWidth, {LARGE, SMALL} from 'material-ui/utils/withWidth';
+import ThemeDefault from '../theme-default';
+import Data from '../data';
+import LeftDrawer from '../pages/modulesIndex.jsx';
 
-
-const Logged = (props) => (
-  <IconMenu
-    {...props}
-    iconButtonElement={
-      <IconButton><MoreVertIcon /></IconButton>
-    }
-    targetOrigin={{horizontal: 'right', vertical: 'top'}}
-    anchorOrigin={{horizontal: 'right', vertical: 'top'}}
-  >
-    <MenuItem primaryText="Refresh" />
-    <MenuItem primaryText="Help" />
-    <MenuItem primaryText="Sign out" />
-  </IconMenu>
-);
-
-Logged.muiName = 'IconMenu';
-
-class App extends Component {
-  constructor(props){
-    super(props)
-     this.state = {
-      logged: true,
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      navDrawerOpen: false
     };
   }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.width !== nextProps.width) {
+      this.setState({navDrawerOpen: nextProps.width === LARGE});
+    }
+  }
+
+  handleChangeRequestNavDrawer() {
+    this.setState({
+      navDrawerOpen: !this.state.navDrawerOpen
+    });
+  }
+
   render() {
-    return (  
-     <Layout type="column">
-       <Fixed className="header">
-        <AppBar
-          title="Issue Tracker"
-          iconElementRight={<Logged />}
-        />
-       </Fixed>
-       <Flex>
-           <Layout type="row">
-               <Fixed className="sidebar">Fixed Sidebar</Fixed>
-               <Flex className="content">
-                 <div className="container">     
-                  {this.props.children}
-                 </div>
-               </Flex>
-           </Layout>
-       </Flex>
-       <Fixed className="header">
-            Fixed Footer
-        </Fixed>
-     </Layout>
+    let { navDrawerOpen } = this.state;
+    const paddingLeftDrawerOpen = 236;
+
+    const styles = {
+      header: {
+        paddingLeft: navDrawerOpen ? paddingLeftDrawerOpen : 0
+      },
+      container: {
+        margin: '80px 20px 20px 15px',
+        paddingLeft: navDrawerOpen && this.props.width !== SMALL ? paddingLeftDrawerOpen : 0
+      }
+    };
+
+    return (
+      <MuiThemeProvider muiTheme={ThemeDefault}>
+        <div>
+          <Header styles={styles.header}
+                  handleChangeRequestNavDrawer={this.handleChangeRequestNavDrawer.bind(this)}/>
+
+          {/*<LeftDrawer navDrawerOpen={navDrawerOpen}
+           menus={Data.menus}
+           username="User Admin"/>*/}
+          <LeftDrawer />
+
+          <div style={styles.container}>
+            {this.props.children}
+          </div>
+        </div>
+      </MuiThemeProvider>
     );
   }
 }
 
-export default App;
+App.propTypes = {
+  children: PropTypes.element,
+  width: PropTypes.number
+};
+
+export default withWidth()(App);

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import URL from '../../../appconfig';
+import URL from '../../appconfig';
 
 //Login
 

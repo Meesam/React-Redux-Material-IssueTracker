@@ -1,6 +1,6 @@
 import {connect} from 'react-redux';
 import {fetchModules,fetchModulesSuccess,fetchModulesFailure} from '.././actions/modules.jsx';
-import ModulesList from '.././components/Header';
+import LeftDrawer from '.././components/LeftDrawer';
 
 const  mapStateToProps=(state)=>{
   return{
@@ -18,4 +18,4 @@ const mapDispatchToProps=(dispatch)=>{
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ModulesList);
+export default connect(mapStateToProps, mapDispatchToProps)(LeftDrawer);

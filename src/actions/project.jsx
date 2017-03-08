@@ -1,5 +1,5 @@
   import axios from 'axios';
-import URL from '../../../appconfig';
+import URL from '../../appconfig';
 // Project List
 export const FETCH_PROJECT = "FETCH_PROJECT" ;
 export const FETCH_PROJECT_SUCCESS = "FETCH_PROJECT_SUCCESS";
