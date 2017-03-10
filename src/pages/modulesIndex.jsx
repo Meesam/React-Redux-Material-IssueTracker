@@ -1,9 +1,8 @@
-import React,{Component} from 'react'
+import React,{Component , PropTypes} from 'react'
 import LeftDrawer from '.././containers/modulesList.jsx'
 
-export default class ModuleIndex extends Component{
+class ModuleIndex extends Component{
   render(){
-    console.log('mondule index call');
     return(
       <div>
         <LeftDrawer />
@@ -11,3 +10,4 @@ export default class ModuleIndex extends Component{
     )
   }
 }
+export default ModuleIndex;

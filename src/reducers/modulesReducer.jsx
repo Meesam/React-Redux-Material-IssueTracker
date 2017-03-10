@@ -18,7 +18,7 @@ export default function (state=INITIAL_STATE,action) {
     case FETCH_MODULES_FAILURE:
       error = action.payload || {message: action.payload.message};
       return{...state,moduleList:{modules:[],error:error,loading:false}}
-    
+
     default :
       return state;
   }

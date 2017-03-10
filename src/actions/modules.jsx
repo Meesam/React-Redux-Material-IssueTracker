@@ -6,8 +6,8 @@ export const FETCH_MODULES="FETCH_MODULES";
 export const FETCH_MODULES_SUCCESS="FETCH_MODULES_SUCCESS";
 export const FETCH_MODULES_FAILURE="FETCH_MODULES_FAILURE";
 
-export function fetchModules() {
 
+export function fetchModules() {
   const request=axios({
     url:`${URL.ROOT_URL}/modules`,
     method:'GET',
@@ -32,5 +32,6 @@ export function fetchModulesFailure(error) {
     payload:error
   }
 }
+
 
 

@@ -6,7 +6,7 @@ import MenuItem from 'material-ui/MenuItem';
 import {Link} from 'react-router';
 import Avatar from 'material-ui/Avatar';
 import ActionLabel from 'material-ui/svg-icons/action/label';
-import {red500, green500, orange500} from 'material-ui/styles/colors';
+import {red500, green500, orange500,fullWhite} from 'material-ui/styles/colors';
 
 const styles = {
   logo: {
@@ -49,33 +49,28 @@ class LeftDrawer extends React.Component{
   constructor(props){
     super(props);
   }
-  componentWillMount(){
-    this.props.fetchModules();
-  }
-
   render(){
-    const {modules,error,loading}=this.props.moduleList;
-    <ActionLabel color={orange500} />
+   /* <ActionLabel color={orange500} />*/
     return(
       <Drawer
         docked={true}
-        open={true}>
+        open={this.props.navDrawerOpen}>
         <div style={styles.logo}>
           Material Admin
         </div>
         <div style={styles.avatar.div}>
-          <Avatar src="http://www.material-ui.com/images/uxceo-128.jpg"
+          <Avatar src="https://s-media-cache-ak0.pinimg.com/236x/e2/28/b3/e228b3b55721db68685163e603d123b0.jpg"
                   size={50}
                   style={styles.avatar.icon}/>
           <span style={styles.avatar.span}>Meesam</span>
         </div>
         <div>
-          {modules.map((menu, index) =>
+          {this.props.menus.map((menu, index) =>
             <MenuItem
               key={index}
               style={styles.menuItem}
               primaryText={menu.MenuName}
-              leftIcon={<ActionLabel color={orange500} />}
+              leftIcon={<ActionLabel color={fullWhite} />}
               containerElement={<Link to={menu.MenuRoute}/>}
             />
           )}
@@ -85,4 +80,8 @@ class LeftDrawer extends React.Component{
   }
 }
 
+LeftDrawer.propTypes={
+  menus:PropTypes.array,
+  navDrawerOpen:PropTypes.bool
+}
 export default LeftDrawer;
