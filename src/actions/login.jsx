@@ -16,11 +16,16 @@ export function onInitialState(){
 }
 
 export function onLogin(formValues) {
-  const request = axios.post(`${URL}/users/signin`, formValues);
-	return {
+  const request = axios({
+    method: 'post',
+    data: formValues,
+    url: `${URL.ROOT_URL}/login`,
+    headers: []
+  });
+  return {
     type: ON_LOGIN,
     payload: request
-  };
+  }
 }
 
 export function onLoginSuccess(user){
@@ -33,7 +38,7 @@ export function onLoginSuccess(user){
 export function onLoginFailure(error){
    return {
     type:ON_LOGIN_FAILURE,
-    payload:error   
+    payload:error
 
    }
 }

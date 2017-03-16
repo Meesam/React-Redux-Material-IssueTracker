@@ -7,10 +7,9 @@ import FlatButton from 'material-ui/FlatButton';
 import {grey500, white} from 'material-ui/styles/colors';
 import PersonAdd from 'material-ui/svg-icons/social/person-add';
 import Help from 'material-ui/svg-icons/action/help';
-//import TextField from 'material-ui/TextField';
 import {Link} from 'react-router';
 import ThemeDefault from '../theme-default';
-import {onLogin} from '../actions/login.jsx';
+import {onLogin,onLoginFailure,onLoginSuccess} from '../actions/login.jsx';
 import { reduxForm, Field, SubmissionError } from 'redux-form/immutable';
 import { renderTextField }   from '../common/renderTextField.jsx';
 
@@ -73,54 +72,51 @@ const styles = {
   },
 };
 
-function validate(values) {
-
-  var errors = {};
-  var hasErrors = false;
-  if (!values.username || values.username.trim() === '') {
-    errors.username = 'Enter username';
-    hasErrors = true;
-  }
-  if (!values.password || values.password.trim() === '') {
-    errors.password = 'Enter password';
-    hasErrors = true;
-  }
-  return hasErrors && errors;
+const validate = values => {
+  const errors = {}
+  const requiredFields = [ 'username', 'password']
+  requiredFields.forEach(field => {
+    if (!values[ field ]) {
+      errors[ field ] = 'Required'
+    }
+  })
+  return errors
 }
 
-//const
+const validateAndSignInUser=(values, dispatch)=> {
+  return dispatch(onLogin(values))
+   .then((result) => {
+   if (result.value.data.Status !== "success") {
+    dispatch(onLoginFailure(result.payload.data));
+    throw new SubmissionError(result.payload.data);
+   }
+   localStorage.setItem('jwtToken', result.value.data.token);
+   dispatch(onLoginSuccess(result.value.data.objdata));
+   });
+};
 
 class LoginPage extends Component {
   static contextTypes = {
     router: PropTypes.object
   };
 
-
-  validateAndSignInUser(formData, dispatch) {
-    console.log('values ' + JSON.stringify(formData));
-    /*return dispatch(onLogin(values))
-     .then((result) => {
-     if (result.payload.response && result.payload.response.status !== 200) {
-     dispatch(onLoginFailure(result.payload.response.data));
-     throw new SubmissionError(result.payload.response.data);
-     }
-     localStorage.setItem('jwtToken', result.payload.data.token);
-     dispatch(onLoginSuccess(result.payload.data.objdata));
-     });*/
-  };
-
-
-
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.user.status === 'authenticated' && !nextProps.user.error) {
+      this.context.router.push('/');
+    }
+    if (nextProps.user.status === 'signin' && !nextProps.user.user && nextProps.user.error && !this.props.user.error) {
+      alert(nextProps.user.error.message);
+    }
+  }
 
   render() {
-    //const { userInfo } = this.props.user;
     const {asyncValidating, handleSubmit, submitting} = this.props;
     return (
       <MuiThemeProvider muiTheme={ThemeDefault}>
         <div>
           <div style={styles.loginContainer}>
             <Paper style={styles.paper}>
-              <form onSubmit={ handleSubmit(this.validateAndSignInUser.bind(this)) }>
+              <form onSubmit={ handleSubmit(validateAndSignInUser) }>
                 <div>
                   <Field name="username" type="text" label="User Name" component={renderTextField} />
                   <Field name="password" type="password" label="Password" component={renderTextField} />
@@ -164,7 +160,8 @@ class LoginPage extends Component {
 }
 
 export default  reduxForm({
-  form: 'LoginPage'
+  form: 'LoginPage',
+  validate
 })(LoginPage)
 
 

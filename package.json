@@ -1,7 +1,7 @@
 {
-  "name": "react-material-admin-template",
+  "name": "react-material-issue-tracker",
   "version": "0.0.1",
-  "description": "Admin template using React and Material-UI",
+  "description": "Issue Tracker using React and Material-UI",
   "engines": {
     "npm": ">=3"
   },
@@ -22,8 +22,8 @@
     "open:cover": "npm run test:cover && open coverage/index.html",
     "run": "export NODE_ENV=localdev; node server.js"
   },
-  "author": "Rafael Zeffa",
-  "license": "MIT",
+  "author": "Meesam",
+  "license": "",
   "dependencies": {
     "axios": "0.15.3",
     "body-parser": "^1.15.0",
@@ -64,7 +64,8 @@
     "redux-promise-middleware": "4.2.0",
     "redux-thunk": "2.2.0",
     "response-time": "^2.3.1",
-    "winston": "^2.3.0"
+    "winston": "^2.3.0",
+    "bcrypt": "^1.0.2"
   },
   "devDependencies": {
     "autoprefixer": "6.4.0",
@@ -129,6 +130,6 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/rafaelhz/react-material-admin-template"
+    "url": "https://github.com/Meesam/React-Redux-Material-IssueTracker"
   }
 }
