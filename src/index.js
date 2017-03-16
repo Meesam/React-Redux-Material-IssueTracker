@@ -10,7 +10,7 @@ import 'flexboxgrid/css/flexboxgrid.css';
 import { syncHistoryWithStore} from 'react-router-redux';
 import App from './pages/appIndex.jsx';
 import NotFoundPage from './containers/NotFoundPage.js';
-import LoginPage from './containers/LoginPage';
+import LoginPage from './pages/loginIndex.jsx';
 import FormPage from './containers/FormPage';
 import TablePage from './containers/TablePage';
 import Dashboard from './containers/DashboardPage';

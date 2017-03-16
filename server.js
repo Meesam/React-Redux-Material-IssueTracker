@@ -21,8 +21,8 @@
   let apiRoutes = express.Router();
 
     // use middleware
-  app.use(express.static(path.join(__dirname+'/public')));
-  app.use(express.static(path.join(__dirname+'/public/swagger_dist')));
+  //app.use(express.static(path.join(__dirname+'/public')));
+ // app.use(express.static(path.join(__dirname+'/public/swagger_dist')));
   app.use(bodyParser.urlencoded({ extended: false }));
   app.use(bodyParser.json());
   app.use(cookieparser());
@@ -66,12 +66,12 @@
 
 
   app.route('/*').get(function(req, res) {
-    if(req.path==='/swagger'){
+    /*if(req.path==='/swagger'){
       // for swagger
       return res.sendFile(path.join(__dirname +'/public/swagger_dist/index.html'));
-    } else {
-      return res.sendFile(path.join(__dirname+'/public/index.html'));
-    }
+    }*/
+      return res.sendFile(path.join(__dirname+'/src/index.html'));
+
   });
 
 
