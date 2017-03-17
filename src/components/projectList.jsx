@@ -4,8 +4,42 @@ import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColu
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentCreate from 'material-ui/svg-icons/content/create';
 import ContentAdd from 'material-ui/svg-icons/content/add';
-import {pink500, grey200, grey500} from 'material-ui/styles/colors';
+import {pink500, grey200, grey500,blue700} from 'material-ui/styles/colors';
 import PageBase from '../components/PageBase';
+import RenderList from '../common/renderList.jsx';
+
+const styles = {
+  floatingActionButton: {
+    margin: 0,
+    top: 'auto',
+    right: 20,
+    bottom: 80,
+    left: 'auto',
+    position: 'fixed',
+  },
+  editButton: {
+    fill: grey500
+  },
+  columns: {
+    id: {
+      width: '10%'
+    },
+    name: {
+      width: '40%'
+    },
+    price: {
+      width: '20%'
+    },
+    category: {
+      width: '20%'
+    },
+    edit: {
+      width: '10%'
+    }
+  }
+};
+
+const iconList=[{name:'View'},{name:'Edit'},{name:'Delete'}];
 
 class ProjectList extends Component{
   constructor(props){
@@ -16,33 +50,20 @@ class ProjectList extends Component{
     this.props.fetchProject();
   }
 
-  renderProject(project){
-   return project.map((item)=>{
-     return(
-       <div key={item._id}>
-         <li className="time-label">
-          <span className="bg-red">
-            18 Feb. 2017
-          </span>
-       </li>
-       <li>
-         <i className="fa fa-envelope bg-blue"></i>
-         <div className="timeline-item">
-           <span className="time"><i class="fa fa-clock-o"></i> 12:05</span>
-              <h3 className="timeline-header"><a href="#">{item.ProjectName}</a></h3>
-              <div className="timeline-body">
-                 {item.Description}
-              </div>
-              <div className="timeline-footer">
-                <a className="btn btn-primary btn-xs">Read more</a>
-                <a className="btn btn-danger btn-xs">Delete</a>
-              </div>
-         </div>
-       </li>
-       </div>
-     );
-   })
+  makeProjectData(project) {
+    var arr = []
+    project.forEach(function (item) {
+      var obj = {
+        id: item._id,
+        title: item.ProjectName,
+        text: item.Description
+      }
+      arr.push(obj);
+    });
+    return arr;
   }
+
+
 
   render(){
     const { projects,error,loading } = this.props.projectList
@@ -54,9 +75,12 @@ class ProjectList extends Component{
     }
     return(
       <div>
-         <ul className="timeline">
-            {this.renderProject(projects)}
-         </ul>
+        <Link to="/form" >
+          <FloatingActionButton style={styles.floatingActionButton}  iconStyle={{backgroundColor: blue700}}>
+            <ContentAdd />
+          </FloatingActionButton>
+        </Link>
+         <RenderList listTitle="Project List" data={this.makeProjectData(projects)} iconList={iconList} />
       </div>
     )
   }

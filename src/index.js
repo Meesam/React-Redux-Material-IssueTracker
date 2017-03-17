@@ -15,6 +15,8 @@ import FormPage from './containers/FormPage';
 import TablePage from './containers/TablePage';
 import Dashboard from './containers/DashboardPage';
 import configureStore from './store/configureStore.jsx';
+import ProjectList from './pages/projectIndex.jsx';
+import ViewProjectIndex from './pages/viewProjectIndex.jsx'
 
 const store = configureStore();
 const history = syncHistoryWithStore(browserHistory, store);
@@ -30,6 +32,8 @@ render(
         <Route path="dashboard" component={Dashboard}/>
         <Route path="form" component={FormPage}/>
         <Route path="table" component={TablePage}/>
+        <Route path="project" component={ProjectList}/>
+        <Route path="project/:Id" component={ViewProjectIndex}/>
         <Route path="*" component={NotFoundPage}/>
       </Route>
     </Router>
