@@ -22,6 +22,7 @@ apiRoutes.post('/project',function (req,resp,next) {
 
 
 apiRoutes.get('/projects/:projectId',function(req,resp,next){
+  logger.info('projectId on server ' , req.params)
 	projects.getProjectById(req.params.projectId,function(data,err){
 		if(err) {
 			return next(err);

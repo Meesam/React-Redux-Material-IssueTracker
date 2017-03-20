@@ -3,18 +3,19 @@ import {fectchProjectById,fetchProjectByIdSuccess,fetchProjectByIdFailure} from 
 import ViewProject from '.././components/viewProject.jsx';
 
 
-const mapStateToProps=(state)=>{
+const mapStateToProps=(state,ownProps)=>{
   return{
-    project:state.projects.projects
+    project:state.projects.projects,
+    projectId:ownProps.id
   }
 }
 
 const mapDispatchToProps=(dispatch)=>{
-  return{
+  return {
     fectchProjectById:(projectId)=>{
       dispatch(fectchProjectById(projectId))
         .then((response)=> {
-          !response.error ? dispatch(fetchProjectByIdSuccess(response.value.data.objdata)):dispatch(fetchProjectByIdFailure(response.payload.data))
+           !response.error ? dispatch(fetchProjectByIdSuccess(response.value.data.objdata)):dispatch(fetchProjectByIdFailure(response.payload.data))
         })
     }
   }

@@ -23,7 +23,7 @@ export default function (state=INITIAL_STATE,action) {
       return {...state,projects:[],error:null,loading:false};
 
     case FETCH_PROJECT_BY_ID:
-      return {...state , projects:{project:{},error:null,loading:true}};
+      return {...state , projects:{project:null,error:null,loading:true}};
 
     case FETCH_PROJECT_BY_ID_SUCCESS:
       return {...state , projects:{project:action.payload,error:null,loading:false}};

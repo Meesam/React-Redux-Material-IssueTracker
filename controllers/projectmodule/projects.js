@@ -8,8 +8,6 @@ let mongoose=require('mongoose');
 let Projects = mongoose.model('Projects');
 
 exports.getAllProject=function(aTableInfo,callback){
-	console.log('TableInfo are ' +  JSON.stringify(aTableInfo));
-
 	let totalRecord=null;
 	let perPage = aTableInfo.RPP
 	 , page = Math.max(0, aTableInfo.CurPage);
@@ -49,6 +47,7 @@ exports.addProject=function(projectdetails,callback){
 };
 
 exports.getProjectById=function(projectId,callback){
+
 	if(projectId==0)
 		callback(null,err);
 	else{

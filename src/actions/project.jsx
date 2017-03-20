@@ -37,7 +37,7 @@
 
   export function fectchProjectById(projectId) {
     const request=axios({
-      url:`${URL.ROOT_URL}/project/${projectId}`,
+      url:`${URL.ROOT_URL}/projects/${projectId}`,
       method:'GET',
       Headers:[]
     });
