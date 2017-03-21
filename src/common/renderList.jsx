@@ -28,15 +28,18 @@ const iconButtonElement = (
       touch={true}
       tooltipPosition="bottom-left"
     >
-      <MoreVertIcon color={grey400}/>
+      <MoreVertIcon color={cyan600}/>
     </IconButton>
 )
 
 const rightIconMenu =(
- <IconMenu iconButtonElement={iconButtonElement}>
-   <MenuItem>View</MenuItem>
-   <MenuItem>Edit</MenuItem>
-   <MenuItem>Delete</MenuItem>
+ <IconMenu iconButtonElement={iconButtonElement}
+           anchorOrigin={{horizontal: 'right', vertical: 'top'}}
+           targetOrigin={{horizontal: 'right', vertical: 'top'}}
+ >
+   <MenuItem href="/project/1" primaryText="View" />
+   <MenuItem href="/project/1" primaryText="Edit" />
+   <MenuItem href="/project/1" primaryText="Delete" />
  </IconMenu>
 )
 
