@@ -7,6 +7,9 @@ import ContentAdd from 'material-ui/svg-icons/content/add';
 import {pink500, grey200, grey500,blue700} from 'material-ui/styles/colors';
 import PageBase from '../components/PageBase';
 import RenderList from '../common/renderList.jsx';
+import {Tabs, Tab} from 'material-ui/Tabs';
+import FontIcon from 'material-ui/FontIcon';
+import MapsPersonPin from 'material-ui/svg-icons/maps/person-pin';
 
 const styles = {
   floatingActionButton: {
@@ -44,6 +47,9 @@ const iconList=[{name:'View'},{name:'Edit'},{name:'Delete'}];
 class ProjectList extends Component{
   constructor(props){
     super(props)
+    this.state = {
+      selectedIndex: 0,
+    };
   }
 
   componentWillMount(){
@@ -63,7 +69,7 @@ class ProjectList extends Component{
     return arr;
   }
 
-
+  select = (index) => this.setState({selectedIndex: index});
 
   render(){
     const { projects,error,loading } = this.props.projectList
@@ -75,11 +81,20 @@ class ProjectList extends Component{
     }
     return(
       <div>
-        <Link to="/form" >
+        <Link to="/newproject" >
           <FloatingActionButton style={styles.floatingActionButton}  iconStyle={{backgroundColor: blue700}}>
             <ContentAdd />
           </FloatingActionButton>
         </Link>
+        <Tabs>
+          <Tab
+            icon={<FontIcon className="material-icons">List View</FontIcon>}
+          />
+          <Tab
+            icon={<FontIcon className="material-icons">Tiles View</FontIcon>}
+          />
+        </Tabs>
+
          <RenderList listTitle="Project List" data={this.makeProjectData(projects)} iconList={iconList} />
       </div>
     )

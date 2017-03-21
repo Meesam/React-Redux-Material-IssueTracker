@@ -17,6 +17,7 @@ import Dashboard from './containers/DashboardPage';
 import configureStore from './store/configureStore.jsx';
 import ProjectList from './pages/projectIndex.jsx';
 import ViewProjectIndex from './pages/viewProjectIndex.jsx'
+import NewProject from './pages/newProjectIndex.jsx';
 
 const store = configureStore();
 const history = syncHistoryWithStore(browserHistory, store);
@@ -34,6 +35,7 @@ render(
         <Route path="table" component={TablePage}/>
         <Route path="project" component={ProjectList}/>
         <Route path="project/:Id" component={ViewProjectIndex}/>
+        <Route path="newproject" component={NewProject}/>
         <Route path="*" component={NotFoundPage}/>
       </Route>
     </Router>

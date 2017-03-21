@@ -11,9 +11,9 @@ console.log(chalkProcessing('Opening production build...'));
 
 // Run Browsersync
 browserSync({
-  port: 3000,
+  port: 9000,
   ui: {
-    port: 3001
+    port: 9001
   },
   server: {
     baseDir: 'dist'

@@ -56,7 +56,7 @@ class LeftDrawer extends React.Component{
         docked={true}
         open={this.props.navDrawerOpen}>
         <div style={styles.logo}>
-          Material Admin
+          Issue Tracker
         </div>
         <div style={styles.avatar.div}>
           <Avatar src="https://s-media-cache-ak0.pinimg.com/236x/e2/28/b3/e228b3b55721db68685163e603d123b0.jpg"
