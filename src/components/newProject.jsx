@@ -10,6 +10,10 @@ import { renderTextField }   from '../common/renderTextField.jsx';
 import { renderSelectField } from '../common/renderSelectField.jsx';
 import {renderDateField} from '../common/renderDateField.jsx';
 import {addProject,addProjectSuccess,addProjectFailue} from '../actions/project.jsx';
+import { reducer as notifReducer, actions as notifActions, Notifs } from 'redux-notifications';
+const { notifSend } = notifActions;
+
+
 const styles = {
   toggleDiv: {
     maxWidth: 300,
@@ -29,7 +33,9 @@ const styles = {
   }
 };
 
+
 class NewProject extends Component{
+
   static contextTypes = {
     router: PropTypes.object
   };
@@ -50,10 +56,17 @@ class NewProject extends Component{
    })
   }
 
+  sendMsg() {
+    this.props.dispatch(notifSend({
+      message: 'hello world',
+      kind: 'info',
+      dismissAfter: 5000
+    }));
+  }
+
   validateAndSave(values,dispatch) {
     return dispatch(addProject(values)).
     then((response)=>{
-       console.log('response are ' + JSON.stringify(response.value));
       !response.error ? dispatch(addProjectSuccess(response.value.data.objdata)):dispatch(addProjectFailue(response.payload.data))
     })
   };
@@ -63,7 +76,6 @@ class NewProject extends Component{
     const {success}=this.props.newProject;
     const {handleSubmit} = this.props;
     console.log('newProject are ' + JSON.stringify(success));
-
     return(
       <PageBase title="Add Project">
         <form onSubmit={ handleSubmit(this.validateAndSave) }>

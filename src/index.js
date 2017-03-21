@@ -18,6 +18,8 @@ import configureStore from './store/configureStore.jsx';
 import ProjectList from './pages/projectIndex.jsx';
 import ViewProjectIndex from './pages/viewProjectIndex.jsx'
 import NewProject from './pages/newProjectIndex.jsx';
+import { Notifs } from 'redux-notifications';
+
 
 const store = configureStore();
 const history = syncHistoryWithStore(browserHistory, store);
