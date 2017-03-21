@@ -81,7 +81,7 @@ class ProjectList extends Component{
     }
     return(
       <div>
-        <Link to="/form" >
+        <Link to="/newproject" >
           <FloatingActionButton style={styles.floatingActionButton}  iconStyle={{backgroundColor: blue700}}>
             <ContentAdd />
           </FloatingActionButton>
