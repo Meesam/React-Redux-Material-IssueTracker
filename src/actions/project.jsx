@@ -15,10 +15,11 @@
   export const FETCH_PROJECTTYPE_SUCCESS="FETCH_PROJECTTYPE_SUCCESS";
   export const FETCH_PROJECTTYPE_FAILURE="FETCH_PROJECTTYPE_FAILURE";
 
-  export function fetchProject() {
+  export function fetchProject(pageInfo) {
     const request=axios({
       url:`${URL.ROOT_URL}/project`,
       method:'POST',
+      data:pageInfo,
       Headers:[]
     });
     return{

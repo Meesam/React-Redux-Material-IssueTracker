@@ -49,7 +49,6 @@ class App extends React.Component {
           <Header styles={styles.header}
                   handleChangeRequestNavDrawer={this.handleChangeRequestNavDrawer.bind(this)}/>
           <LeftDrawer menus={modules} navDrawerOpen={navDrawerOpen}  />
-
           <div style={styles.container}>
             {this.props.children}
           </div>

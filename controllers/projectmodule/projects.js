@@ -8,6 +8,7 @@ let mongoose=require('mongoose');
 let Projects = mongoose.model('Projects');
 
 exports.getAllProject=function(aTableInfo,callback){
+	console.log('aTableInfo ' +  JSON.stringify(aTableInfo));
 	let totalRecord=null;
 	let perPage = aTableInfo.RPP
 	 , page = Math.max(0, aTableInfo.CurPage);

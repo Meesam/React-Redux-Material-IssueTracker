@@ -2,7 +2,7 @@ import React ,{Component,PropTypes} from 'react';
 import {Link} from 'react-router';
 import RaisedButton from 'material-ui/RaisedButton';
 import MenuItem from 'material-ui/MenuItem';
-import {grey400} from 'material-ui/styles/colors';
+import {grey400,deepOrange500,green700} from 'material-ui/styles/colors';
 import Divider from 'material-ui/Divider';
 import PageBase from '../components/PageBase';
 import { reduxForm, Field, SubmissionError } from 'redux-form/immutable';
@@ -10,8 +10,11 @@ import { renderTextField }   from '../common/renderTextField.jsx';
 import { renderSelectField } from '../common/renderSelectField.jsx';
 import {renderDateField} from '../common/renderDateField.jsx';
 import {addProject,addProjectSuccess,addProjectFailue} from '../actions/project.jsx';
-import { reducer as notifReducer, actions as notifActions, Notifs } from 'redux-notifications';
-const { notifSend } = notifActions;
+import ReactMaterialUiNotifications from '../common/renderNotification.jsx';
+import Done from 'material-ui/svg-icons/action/done';
+import Close from 'material-ui/svg-icons/navigation/close'
+import moment from 'moment'
+
 
 
 const styles = {
@@ -41,8 +44,22 @@ class NewProject extends Component{
   };
 
   constructor(props){
-    super(props)
+    super(props);
   }
+
+  showNotification = (msg) => {
+    ReactMaterialUiNotifications.showNotification({
+      title: 'Success',
+      additionalText: msg,
+      icon: <Done />,
+      iconBadgeColor: green700,
+      overflowText: "",
+      timestamp: moment().format('h:mm A'),
+      autoHide:2000,
+      zDepth:5
+    })
+  }
+
 
   componentWillMount(){
     this.props.fetchProjectType();
@@ -56,14 +73,6 @@ class NewProject extends Component{
    })
   }
 
-  sendMsg() {
-    this.props.dispatch(notifSend({
-      message: 'hello world',
-      kind: 'info',
-      dismissAfter: 5000
-    }));
-  }
-
   validateAndSave(values,dispatch) {
     return dispatch(addProject(values)).
     then((response)=>{
@@ -75,7 +84,10 @@ class NewProject extends Component{
     const {projectTypes}=this.props.projectTypeList;
     const {success}=this.props.newProject;
     const {handleSubmit} = this.props;
-    console.log('newProject are ' + JSON.stringify(success));
+    if(success){
+      {this.showNotification(success)}
+    }
+
     return(
       <PageBase title="Add Project">
         <form onSubmit={ handleSubmit(this.validateAndSave) }>
@@ -99,7 +111,20 @@ class NewProject extends Component{
             </Link>
             <RaisedButton label="Save" style={styles.saveButton} type="submit" primary={true}/>
           </div>
+          <ReactMaterialUiNotifications
+            desktop={true}
+            transitionName={{
+              leave: 'dummy',
+              leaveActive: 'fadeOut',
+              appear: 'dummy',
+              appearActive: 'zoomInUp'
+            }}
+            transitionAppear={true}
+            transitionLeave={true}
+            maxNotifications={1}
+          />
         </form>
+
       </PageBase>
     )
   }

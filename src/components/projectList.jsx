@@ -10,6 +10,9 @@ import RenderList from '../common/renderList.jsx';
 import {Tabs, Tab} from 'material-ui/Tabs';
 import FontIcon from 'material-ui/FontIcon';
 import MapsPersonPin from 'material-ui/svg-icons/maps/person-pin';
+import Pagination from '../common/renderPagination.jsx';
+import Divider from 'material-ui/Divider';
+import {fetchProject,fetchProjectSuccess,fetchProjectFailure} from '.././actions/project.jsx';
 
 const styles = {
   floatingActionButton: {
@@ -44,6 +47,14 @@ const styles = {
 
 const iconList=[{name:'View'},{name:'Edit'},{name:'Delete'}];
 
+const aTableInfo={
+  CurPage:1,
+  RPP:5,
+  fetchProject:fetchProject(),
+  fetchProjectSuccess:fetchProjectSuccess(),
+  fetchProjectFailure:fetchProjectFailure()
+}
+
 class ProjectList extends Component{
   constructor(props){
     super(props)
@@ -53,8 +64,15 @@ class ProjectList extends Component{
   }
 
   componentWillMount(){
-    this.props.fetchProject();
+    this.props.fetchProject(aTableInfo);
   }
+
+  /*moveNext = () => {
+    Pagination.moveNext({
+      CurPage:1,
+      RPP:5
+    })
+  }*/
 
   makeProjectData(project) {
     var arr = []
@@ -96,6 +114,8 @@ class ProjectList extends Component{
         </Tabs>
 
          <RenderList listTitle="Project List" data={this.makeProjectData(projects)} iconList={iconList} />
+         <Divider/>
+        <Pagination pageInfo={aTableInfo}  />
       </div>
     )
   }
