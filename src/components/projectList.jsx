@@ -104,18 +104,8 @@ class ProjectList extends Component{
             <ContentAdd />
           </FloatingActionButton>
         </Link>
-        <Tabs>
-          <Tab
-            icon={<FontIcon className="material-icons">List View</FontIcon>}
-          />
-          <Tab
-            icon={<FontIcon className="material-icons">Tiles View</FontIcon>}
-          />
-        </Tabs>
-
-         <RenderList listTitle="Project List" data={this.makeProjectData(projects)} iconList={iconList} />
-         <Divider/>
-        <Pagination pageInfo={aTableInfo}  />
+        <RenderList listTitle="Project List" data={this.makeProjectData(projects)} iconList={iconList} />
+        {/*<Pagination pageInfo={aTableInfo}  />*/}
       </div>
     )
   }
