@@ -8,18 +8,14 @@ let Q=require('q');
 let mongoose=require('mongoose');
 let Users = mongoose.model('Users');
 let UsersDetails=mongoose.model('UsersDetails');
+let bcrypt = require('bcrypt');
+let jwt = require('jsonwebtoken');
+mongoose.Promise = Promise;
 
-/*
-let Schema=mongoose.Schema;
-mongoose.connect(appconfig.dbUrl);
-let db=mongoose.connection;
-db.on("error", console.error.bind(console, "connection error"));
-db.once("open", function(callback) {
-	console.log("Connection succeeded.");
-});
-*/
-
-
+if (!process.env.JWT_SECRET) {
+	console.error('ERROR!: Please set JWT_SECRET before running the app. \n run: export JWT_SECRET=<some secret string> to set JWTSecret. ')
+	process.exit();
+}
 
 // Add User
 exports.createUsers=function(users,callback){
@@ -41,25 +37,39 @@ exports.createUsers=function(users,callback){
    }
 };
 
+	function generateToken(user) {
+		//Dont use password and other sensitive fields
+		//Use fields that are useful in other parts of the app/collections/models
+		console.log('user are ' + JSON.stringify(user));
+		let token;
+		var u = {
+			name: user.FirstName + ' ' + user.LastName ,
+			username: user.Username,
+			_id: user._id,
+			emailid:user.Email
+		};
+		return token = jwt.sign(u, process.env.JWT_SECRET, {
+			expiresIn: 60 * 60 * 24 // expires in 24 hours
+		});
+	}
+
 // Login
-exports.doLogin=function(users,callback){
+exports.doLogin=function(users, callback){
 	let obj;
 	if(users != null){
-	  Users.find({usersName:users.usersName,Password:users.Password},function(err,data){
+		Users.find({usersName:users.usersName,Password:users.password},{__v:0,Password:0},function(err,data){
 		 if(err)
 		  callback(null,err);
 		  else{
-			 console.log('data is ' + data.length);
-              if(data.length != 0) {
-				   obj={
+		  	if(data.length != 0) {
+					var token = generateToken(data[0]);
+					obj={
 					  status:'success',
 					  count:data.length,
-					  data:data,
-					 // tokenvalue: data[0].Email
-					  tokenvalue:'meesam.engineer@gmail.com'
-				  };
-			  }
-			 else {
+					  data:data[0],
+					  tokenvalue:token
+				  }
+			  } else {
 				   obj = {
 					  status: 'success',
 					  count: 0,
@@ -98,26 +108,41 @@ exports.addUserDetails=function (userDetails,callback) {
 
 
 // Get User by Email
-exports.getUserByEmail=function(emailid,callback){
-	if(emailid != null){
-		Users.find({Email:emailid},function(err,data){
-           if(err)
-		    callback(null,err);
-			else{
-			   let obj={
-				   status:'success',
-				   count:data.length,
-				   data:data
-			   };
-			   callback(globalobj.globalObject(obj));
-		   }
+exports.getUserBytoken=function(token,callback){
+	let obj;
+	if(token != null){
+		// decode token
+		jwt.verify(token, process.env.JWT_SECRET, function(err, user) {
+			if (err)
+				throw err;
+			Users.findById({'_id': user._id}, function(err, data) {
+				if (err)
+					callback(null,err);
+				if(data) {
+					token = generateToken(data);
+					obj={
+						status:'success',
+						count:data.length,
+						data:data,
+						tokenvalue:token
+					}
+				} else {
+					obj = {
+						status: 'success',
+						count: 0,
+						data: null
+					};
+				}
+				callback(globalobj.globalObject(obj));
+			});
 		});
+
 	}
 
 };
 
 // Get All Users
-exports.getAllUsers=function(callback){
+exports.getAllUsers=function(aTableInfo,callback){
     Users.find({},function(err,data){
 		if(err)
 		 callback(null,err);

@@ -11,5 +11,5 @@ Installation / Running
 
 License
 -------
-MIT
+Public
 # React-Redux-Material-IssueTracker

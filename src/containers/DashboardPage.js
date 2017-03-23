@@ -11,13 +11,13 @@ import BrowserUsage from '../components/dashboard/BrowserUsage';
 import RecentlyProducts from '../components/dashboard/RecentlyProducts';
 import globalStyles from '../styles';
 import Data from '../data';
+import RenderList from '../common/renderList.jsx';
+import ProjectList from '../pages/projectIndex.jsx'
 
 const DashboardPage = () => {
 
   return (
     <div>
-      <h3 style={globalStyles.navigation}>Application / Dashboard</h3>
-
       <div className="row">
 
         <div className="col-xs-12 col-sm-6 col-md-3 col-lg-3 m-b-15 ">
@@ -67,6 +67,7 @@ const DashboardPage = () => {
       <div className="row">
         <div className="col-xs-12 col-sm-12 col-md-6 col-lg-6 m-b-15 ">
           <RecentlyProducts data={Data.dashBoardPage.recentProducts}/>
+
         </div>
 
         <div className="col-xs-12 col-sm-12 col-md-6 col-lg-6 m-b-15 ">

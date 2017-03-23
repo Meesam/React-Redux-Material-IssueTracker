@@ -10,7 +10,7 @@ exports.dbconfig={
   server:'DELL-PC',
   user:'sa',
   password:'M2e2s1a1@123123',
-  database:'IssueTracker' 
+  database:'IssueTracker'
 }*/
 
 // This setting For MongoDb

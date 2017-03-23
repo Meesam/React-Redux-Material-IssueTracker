@@ -25,7 +25,7 @@ export default {
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin(),
     new HtmlWebpackPlugin({
-      template: 'src/index.ejs',
+      template: 'src/index.html',
       minify: {
         removeComments: true,
         collapseWhitespace: true
@@ -35,6 +35,15 @@ export default {
   ],
   module: {
     loaders: [
+      {
+        test: /\.jsx?$/,
+        exclude: /node_modules/,
+        loader: 'babel-loader',
+        query: {
+          presets: ['es2015', 'react','stage-0'],
+          plugins: ['react-html-attrs', 'transform-class-properties', 'transform-decorators-legacy'],
+        }
+      },
       {test: /\.js$/, exclude: /node_modules/, loaders: ['babel']},
       {test: /\.eot(\?v=\d+.\d+.\d+)?$/, loader: 'file'},
       {test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: "url?limit=10000&mimetype=application/font-woff"},
