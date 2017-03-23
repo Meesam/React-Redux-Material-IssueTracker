@@ -12,7 +12,9 @@ import {grey400, cyan600, white,blue600,blue300,
 import {typography} from 'material-ui/styles';
 import Wallpaper from 'material-ui/svg-icons/device/wallpaper';
 import FontIcon from 'material-ui/FontIcon';
-import PageBase from '../components/PageBase';
+import PageBase from '../common/renderPageBase.jsx';
+import globalStyles from '../styles';
+import Divider from 'material-ui/Divider';
 
 
 const styles = {
@@ -26,7 +28,7 @@ const styles = {
     textAlign: 'left',
     borderRadius: 3,
     margin: '10px auto',
-    width:500,
+    width:1000,
     height:200
   },
     listItemStyle : {
@@ -62,7 +64,6 @@ class RenderList extends Component{
 
   render(){
     return(
-      <PageBase title="Project List">
         <div style={styles.maindiv}>
         {this.props.data.map(item =>
           <Paper
@@ -71,11 +72,15 @@ class RenderList extends Component{
             zDepth={5}
             transitionEnabled={false}
           >
-            <List style={styles.listStyle}>
+           <List style={styles.listStyle}>
               <ListItem
-                primaryText={item.title}
-                secondaryText={item.text}
-                secondaryTextLines={item.text}
+                primaryText={<h3 style={globalStyles.title}>{item.title}</h3>}
+                secondaryText={
+                  <p>
+                    {item.description}
+                  </p>
+                }
+                secondaryTextLines={2}
                 leftAvatar={
                   <Avatar
                     color={white}
@@ -93,26 +98,6 @@ class RenderList extends Component{
             </List>
           </Paper>)}
         </div>
-      </PageBase>
-
-
-      /*<Paper>
-        <List>
-          {/!*<Subheader style={styles.subheader}>{this.props.listTitle}</Subheader>*!/}
-          {this.props.data.map(item =>
-            <div key={item.id}>
-              <ListItem
-                leftAvatar={<Avatar icon={<Wallpaper />} />}
-                primaryText={item.title}
-                secondaryText={item.text}
-                id={item.id}
-                onTouchTap={this._handleTouchTap.bind(this, item.id)}
-              />
-              <Divider inset={true} />
-            </div>
-          )}
-        </List>
-      </Paper>*/
     )
   }
 }

@@ -5,7 +5,7 @@ import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentCreate from 'material-ui/svg-icons/content/create';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import {pink500, grey200, grey500,blue700} from 'material-ui/styles/colors';
-import PageBase from '../components/PageBase';
+import PageBase from '../common/renderPageBase.jsx';
 import RenderList from '../common/renderList.jsx';
 import {Tabs, Tab} from 'material-ui/Tabs';
 import FontIcon from 'material-ui/FontIcon';
@@ -13,12 +13,14 @@ import MapsPersonPin from 'material-ui/svg-icons/maps/person-pin';
 import Pagination from '../common/renderPagination.jsx';
 import Divider from 'material-ui/Divider';
 import {fetchProject,fetchProjectSuccess,fetchProjectFailure} from '.././actions/project.jsx';
+import ProjectFilter from './projectFilteroption.jsx';
+import ProjectSort from './projectSortOptions.jsx';
 
 const styles = {
   floatingActionButton: {
     margin: 0,
     top: 'auto',
-    right: 20,
+    right: 50,
     bottom: 80,
     left: 'auto',
     position: 'fixed',
@@ -80,7 +82,10 @@ class ProjectList extends Component{
       var obj = {
         id: item._id,
         title: item.ProjectName,
-        text: item.Description
+        startdate:item.StartDate,
+        enddate:item.EndDate,
+        description: item.Description,
+        type:item.ProjectType
       }
       arr.push(obj);
     });
@@ -98,15 +103,41 @@ class ProjectList extends Component{
       return <div className="alert-error">${error.message}</div>
     }
     return(
-      <div>
+      <PageBase title="Project List">
+        <div>
         <Link to="/newproject" >
           <FloatingActionButton style={styles.floatingActionButton}  iconStyle={{backgroundColor: blue700}}>
             <ContentAdd />
           </FloatingActionButton>
         </Link>
-        <RenderList listTitle="Project List" data={this.makeProjectData(projects)} iconList={iconList} />
+        <div className="row">
+          <div className="col-xs-12 col-sm-5 col-md-5 col-lg-3 m-b-15 ">
+            <div className="row">
+              <div className="col-xs-12 col-sm-5 col-md-5 col-lg-12 m-b-15 ">
+                <ProjectFilter />
+              </div>
+            </div>
+            <div className="row-fluid">
+              <ProjectSort />
+            </div>
+          </div>
+          <div className="col-xs-12 col-sm-10 col-md-10 col-lg-9 m-b-15 ">
+            <div className="row">
+              <RenderList listTitle="Project List" data={this.makeProjectData(projects)} iconList={iconList} />
+            </div>
+            <div className="row">
+              <div className="col-xs-12 col-sm-6 col-md-6 col-lg-3 m-b-15">
+                <Pagination pageInfo={aTableInfo}  />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        </div>
+
+
         {/*<Pagination pageInfo={aTableInfo}  />*/}
-      </div>
+      </PageBase>
     )
   }
 }
