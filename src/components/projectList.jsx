@@ -1,17 +1,11 @@
 import React,{ Component } from 'react';
 import {Link} from 'react-router';
-import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
-import ContentCreate from 'material-ui/svg-icons/content/create';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import {pink500, grey200, grey500,blue700} from 'material-ui/styles/colors';
 import PageBase from '../common/renderPageBase.jsx';
 import RenderList from '../common/renderList.jsx';
-import {Tabs, Tab} from 'material-ui/Tabs';
-import FontIcon from 'material-ui/FontIcon';
-import MapsPersonPin from 'material-ui/svg-icons/maps/person-pin';
 import Pagination from '../common/renderPagination.jsx';
-import Divider from 'material-ui/Divider';
 import {fetchProject,fetchProjectSuccess,fetchProjectFailure} from '.././actions/project.jsx';
 import ProjectFilter from './projectFilteroption.jsx';
 import ProjectSort from './projectSortOptions.jsx';
@@ -60,9 +54,6 @@ const aTableInfo={
 class ProjectList extends Component{
   constructor(props){
     super(props)
-    this.state = {
-      selectedIndex: 0,
-    };
   }
 
   componentWillMount(){
@@ -91,8 +82,6 @@ class ProjectList extends Component{
     });
     return arr;
   }
-
-  select = (index) => this.setState({selectedIndex: index});
 
   render(){
     const { projects,error,loading } = this.props.projectList

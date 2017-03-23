@@ -14,6 +14,9 @@
   export const FETCH_PROJECTTYPE="FETCH_PROJECTTYPE";
   export const FETCH_PROJECTTYPE_SUCCESS="FETCH_PROJECTTYPE_SUCCESS";
   export const FETCH_PROJECTTYPE_FAILURE="FETCH_PROJECTTYPE_FAILURE";
+  export const SEARCH_PROJECT="SEARCH_PROJECT";
+  export const SEARCH_PROJECT_SUCCESS="SEARCH_PROJECT_SUCCESS";
+  export const SEARCH_PROJECT_FAILURE="SEARCH_PROJECT_FAILURE";
 
   export function fetchProject(pageInfo) {
     const request=axios({
@@ -120,3 +123,32 @@
       payload:error
     }
   }
+
+  export function searchProject(pageInfo) {
+    console.log('pageInfo are ' + JSON.stringify(pageInfo));
+    const request=axios({
+      url:`${URL.ROOT_URL}/project/search`,
+      method:'POST',
+      data:pageInfo,
+      Headers:[]
+    });
+    return{
+      type:SEARCH_PROJECT,
+      payload:request
+    }
+  }
+
+  export function searchProjectSuccess(projects) {
+    return{
+      type:SEARCH_PROJECT_SUCCESS,
+      payload:projects
+    }
+  }
+
+  export function searchProjectFailure(error) {
+    return{
+      type:SEARCH_PROJECT_FAILURE,
+      payload:error
+    }
+  }
+

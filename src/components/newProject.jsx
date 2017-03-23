@@ -103,10 +103,8 @@ class NewProject extends Component{
 
           <Field name="Description" type="text" label="Description" fullWidth={true} component={renderTextField} />
 
-          <Divider/>
-
           <div style={styles.buttons}>
-            <Link to="/">
+            <Link to="/project">
               <RaisedButton label="Cancel"/>
             </Link>
             <RaisedButton label="Save" style={styles.saveButton} type="submit" primary={true}/>

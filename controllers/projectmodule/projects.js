@@ -31,6 +31,31 @@ exports.getAllProject=function(aTableInfo,callback){
 	}).skip(perPage * (page-1)).limit(perPage).sort('ProjectName');;
 };
 
+
+  exports.getSearchProject=function(aTableInfo,callback){
+    console.log('aTableInfo ' +  JSON.stringify(aTableInfo));
+    let totalRecord=null;
+    let perPage = aTableInfo.RPP
+      , page = Math.max(0, aTableInfo.CurPage);
+    Projects.count({'ProjectName' : new RegExp(aTableInfo.ProjectName, 'i')},function(err,data){
+      if(err)
+        totalRecord=0;
+      else
+        totalRecord=data;
+    });
+    Projects.find({'ProjectName' : new RegExp(aTableInfo.ProjectName, 'i')},function(err,data){
+      if(err)
+        callback(null,err);
+      else {
+        let	obj = {
+          status: 'success',
+          data: data
+        };
+        callback(globalobj.globalObject(obj));
+      }
+    }).skip(perPage * (page-1)).limit(perPage).sort('ProjectName');;
+  };
+
 exports.addProject=function(projectdetails,callback){
   let project=new Projects(projectdetails);
 	project.save(function(err){
@@ -141,9 +166,9 @@ exports.getProjectById=function(projectid,callback){
 		        let obj={
 					status:'success',
 					count:data.length,
-					data:data	
+					data:data
 				}
-				callback(globalobj.globalObject(obj));		
+				callback(globalobj.globalObject(obj));
 			}
 		})
 	}

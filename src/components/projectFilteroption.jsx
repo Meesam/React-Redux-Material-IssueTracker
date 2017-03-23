@@ -7,6 +7,7 @@ import MenuItem from 'material-ui/MenuItem';
 import Chip from 'material-ui/Chip';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
+import {searchProject,searchProjectSuccess,searchProjectFailure} from '../actions/project.jsx';
 
 const styles = {
   chip: {
@@ -30,8 +31,12 @@ function handleTouchTap() {
 }
 
 
-const submitForm=(values,dispatch)=>{
+const searchProjects=(values,dispatch)=>{
   console.log('submit values are ' + JSON.stringify(values));
+  return dispatch(searchProject(values)).
+  then((response)=>{
+    !response.error ? dispatch(searchProjectSuccess(response.value.data.objdata)):dispatch(searchProjectFailure(response.payload.data))
+  })
 }
 
 class ProjectFilter extends Component{
@@ -43,7 +48,7 @@ class ProjectFilter extends Component{
     let source=[{_id:1,Title:'Internal'},{_id:2,Title:'External'}]
     return source.map((item)=>{
       return(
-        <MenuItem key={item._id} value={item._id} primaryText={item.Title} />
+        <MenuItem key={item._id} value={item.Title} primaryText={item.Title} />
       )
     })
   }
@@ -52,7 +57,7 @@ class ProjectFilter extends Component{
     const {handleSubmit} = this.props;
     return(
       <PageBase title="Filters">
-          <form onSubmit={handleSubmit(submitForm)}>
+          <form onSubmit={handleSubmit(searchProjects)}>
             <Field name="ProjectName" type="text" label="Project Title" fullWidth={true} component={renderTextField} />
             <Field name="ProjectType" label="Project Type" fullWidth={true} component={renderSelectField}>
               {this.renderSource()}

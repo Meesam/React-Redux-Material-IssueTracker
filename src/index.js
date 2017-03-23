@@ -19,6 +19,7 @@ import ProjectList from './pages/projectIndex.jsx';
 import ViewProjectIndex from './pages/viewProjectIndex.jsx'
 import NewProject from './pages/newProjectIndex.jsx';
 import { Notifs } from 'redux-notifications';
+import UserList from './pages/usersIndex.jsx';
 
 
 const store = configureStore();
@@ -38,6 +39,7 @@ render(
         <Route path="project" component={ProjectList}/>
         <Route path="project/:Id" component={ViewProjectIndex}/>
         <Route path="newproject" component={NewProject}/>
+        <Route path="users" component={UserList}/>
         <Route path="*" component={NotFoundPage}/>
       </Route>
     </Router>

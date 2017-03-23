@@ -1,5 +1,6 @@
 import { FETCH_PROJECT,FETCH_PROJECT_SUCCESS,FETCH_PROJECT_FAILURE,RESETS_PROJECT,FETCH_PROJECT_BY_ID,FETCH_PROJECT_BY_ID_SUCCESS,FETCH_PROJECT_BY_ID_FAILURE,
-  ADD_PROJECT,ADD_PROJECT_SUCCESS,ADD_PROJECT_FAILURE,FETCH_PROJECTTYPE,FETCH_PROJECTTYPE_SUCCESS,FETCH_PROJECTTYPE_FAILURE} from '.././actions/project.jsx'
+  ADD_PROJECT,ADD_PROJECT_SUCCESS,ADD_PROJECT_FAILURE,FETCH_PROJECTTYPE,FETCH_PROJECTTYPE_SUCCESS,FETCH_PROJECTTYPE_FAILURE,
+  SEARCH_PROJECT,SEARCH_PROJECT_SUCCESS,SEARCH_PROJECT_FAILURE } from '.././actions/project.jsx'
 
 const INITIAL_STATE={
   projectList:{projects:[],error:null,loading:false},
@@ -19,6 +20,16 @@ export default function (state=INITIAL_STATE,action) {
       return{...state,projectList:{projects:action.payload,error:null,loading:false}};
 
     case FETCH_PROJECT_FAILURE:
+      error = action.payload || {message: action.payload.message};
+      return{...state,projectList:{projects:[],error:error,loading:false}};
+
+    case SEARCH_PROJECT:
+      return{...state,projectList:{projects:[],error:null,loading:true}};
+
+    case SEARCH_PROJECT_SUCCESS:
+      return{...state,projectList:{projects:action.payload,error:null,loading:false}};
+
+    case SEARCH_PROJECT_FAILURE:
       error = action.payload || {message: action.payload.message};
       return{...state,projectList:{projects:[],error:error,loading:false}};
 
