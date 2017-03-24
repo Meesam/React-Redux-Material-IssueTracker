@@ -6,6 +6,7 @@ import ModulesReducer from './modulesReducer.jsx'
 import { reducer as formReducer}  from 'redux-form'
 import DataReducer from './dataReducer.jsx';
 import SystemUserReducer from './userReducer.jsx';
+import Alert from './alertReducer.jsx';
 
 const rootReducer = combineReducers({
   user : UserReducer,
@@ -13,6 +14,7 @@ const rootReducer = combineReducers({
   modules:ModulesReducer,
   data:DataReducer,
   systemUser:SystemUserReducer,
+  alert:Alert,
   form: formReducer ,
   routing: routerReducer
 });

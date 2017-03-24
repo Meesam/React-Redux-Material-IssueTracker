@@ -12,8 +12,7 @@ import {addProject,addProjectSuccess,addProjectFailue} from '../actions/project.
 import ReactMaterialUiNotifications from '../common/renderNotification.jsx';
 import Done from 'material-ui/svg-icons/action/done';
 import moment from 'moment'
-
-
+import Alert from '../common/renderAlert.jsx';
 
 const styles = {
   toggleDiv: {
@@ -119,6 +118,7 @@ class NewProject extends Component{
             transitionLeave={true}
             maxNotifications={1}
           />
+          <Alert />
         </form>
 
       </PageBase>
