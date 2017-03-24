@@ -6,9 +6,9 @@ import {pink500, grey200, grey500,blue700} from 'material-ui/styles/colors';
 import PageBase from '../common/renderPageBase.jsx';
 import RenderList from '../common/renderList.jsx';
 import Pagination from '../common/renderPagination.jsx';
-import {fetchProject,fetchProjectSuccess,fetchProjectFailure} from '.././actions/project.jsx';
 import ProjectFilter from './projectFilteroption.jsx';
 import ProjectSort from './projectSortOptions.jsx';
+import moment from 'moment';
 
 const styles = {
   floatingActionButton: {
@@ -41,14 +41,9 @@ const styles = {
   }
 };
 
-const iconList=[{name:'View'},{name:'Edit'},{name:'Delete'}];
-
 const aTableInfo={
   CurPage:1,
   RPP:5,
-  fetchProject:fetchProject(),
-  fetchProjectSuccess:fetchProjectSuccess(),
-  fetchProjectFailure:fetchProjectFailure()
 }
 
 class ProjectList extends Component{
@@ -57,7 +52,7 @@ class ProjectList extends Component{
   }
 
   componentWillMount(){
-    this.props.fetchProject(aTableInfo);
+    this.props.fetchProject();
   }
 
   /*moveNext = () => {
@@ -73,7 +68,7 @@ class ProjectList extends Component{
       var obj = {
         id: item._id,
         title: item.ProjectName,
-        startdate:item.StartDate,
+        startdate:moment(item.StartDate).format('MMM D , YYYY'),
         enddate:item.EndDate,
         description: item.Description,
         type:item.ProjectType
@@ -112,7 +107,7 @@ class ProjectList extends Component{
           </div>
           <div className="col-xs-12 col-sm-10 col-md-10 col-lg-9 m-b-15 ">
             <div className="row">
-              <RenderList listTitle="Project List" data={this.makeProjectData(projects)} iconList={iconList} />
+              <RenderList listTitle="Project List" data={this.makeProjectData(projects)} />
             </div>
             <div className="row">
               <div className="col-xs-12 col-sm-6 col-md-6 col-lg-3 m-b-15">
@@ -121,11 +116,7 @@ class ProjectList extends Component{
             </div>
           </div>
         </div>
-
         </div>
-
-
-        {/*<Pagination pageInfo={aTableInfo}  />*/}
       </PageBase>
     )
   }

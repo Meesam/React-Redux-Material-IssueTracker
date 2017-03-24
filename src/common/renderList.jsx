@@ -29,11 +29,11 @@ const styles = {
     borderRadius: 3,
     margin: '10px auto',
     width:1000,
-    height:200
+    height:'auto'
   },
     listItemStyle : {
     padding:'20px 8px 0 72px',
-    height:180
+    height:70
   },
 
   listStyle : {
@@ -46,8 +46,17 @@ const styles = {
     float:'left',
     marginLeft:30,
     height:1200
-  }
+  },
+  overflowStyle :{
+    padding: '15px 0 0 72px'
+  },
+
+  innerflowStyle :{
+    padding: '0 0 0 0'
+  },
+
 };
+
 
 class RenderList extends Component{
   static contextTypes = {
@@ -60,7 +69,17 @@ class RenderList extends Component{
 
  _handleTouchTap(id) {
    this.context.router.push('/project/'+id);
- }
+  }
+
+  expandedText(text){
+  return (
+    <div style={styles.overflowStyle}>
+      <div className="row-fluid">
+        {text}
+      </div>
+    </div>)
+}
+
 
   render(){
     return(
@@ -76,9 +95,14 @@ class RenderList extends Component{
               <ListItem
                 primaryText={<h3 style={globalStyles.title}>{item.title}</h3>}
                 secondaryText={
-                  <p>
-                    {item.description}
-                  </p>
+                  <div style={styles.innerflowStyle}>
+                    <div className="row-fluid">
+                      {item.type}
+                    </div>
+                    <div className="row-fluid">
+                      Start at : {item.startdate}
+                    </div>
+                  </div>
                 }
                 secondaryTextLines={2}
                 leftAvatar={
@@ -95,6 +119,7 @@ class RenderList extends Component{
                 innerDivStyle={styles.listItemStyle}
                 onTouchTap={this._handleTouchTap.bind(this, item.id)}
               />
+             {this.expandedText(item.description)}
             </List>
           </Paper>)}
         </div>
@@ -105,7 +130,6 @@ class RenderList extends Component{
 RenderList.propTypes = {
   data: PropTypes.array.isRequired,
   listTitle:PropTypes.string.isRequired,
-  iconList:PropTypes.array.isRequired,
 };
 
 export default RenderList;

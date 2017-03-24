@@ -18,11 +18,16 @@
   export const SEARCH_PROJECT_SUCCESS="SEARCH_PROJECT_SUCCESS";
   export const SEARCH_PROJECT_FAILURE="SEARCH_PROJECT_FAILURE";
 
-  export function fetchProject(pageInfo) {
+  const aTableInfo={
+    CurPage:1,
+    RPP:5,
+  }
+
+  export function fetchProject() {
     const request=axios({
       url:`${URL.ROOT_URL}/project`,
       method:'POST',
-      data:pageInfo,
+      data:aTableInfo,
       Headers:[]
     });
     return{
@@ -125,7 +130,8 @@
   }
 
   export function searchProject(pageInfo) {
-    console.log('pageInfo are ' + JSON.stringify(pageInfo));
+    pageInfo.CurPage=aTableInfo.CurPage;
+    pageInfo.RPP=aTableInfo.RPP;
     const request=axios({
       url:`${URL.ROOT_URL}/project/search`,
       method:'POST',

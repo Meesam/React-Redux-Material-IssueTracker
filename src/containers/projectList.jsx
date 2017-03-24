@@ -10,8 +10,8 @@ const mapStateToProps=(state)=>{
 
 const mapDispatchToProps=(dispatch)=>{
   return{
-     fetchProject:(pageInfo)=>{
-        dispatch(fetchProject(pageInfo)).then((response)=>{
+     fetchProject:()=>{
+        dispatch(fetchProject()).then((response)=>{
           !response.error ? dispatch(fetchProjectSuccess(response.value.data.objdata)):dispatch(fetchProjectFailure(response.payload.data))
         });
      },

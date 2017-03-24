@@ -1,4 +1,4 @@
-import React,{ Component } from 'react';
+import React,{ Component,PropTypes } from 'react';
 import PageBase from '../common/renderPageBase.jsx';
 import { renderSelectField } from '../common/renderSelectField.jsx';
 import {renderTextField} from '../common/renderTextField.jsx';
@@ -26,13 +26,7 @@ const styles = {
   }
 };
 
-function handleTouchTap() {
-  alert('You clicked the Chip.');
-}
-
-
 const searchProjects=(values,dispatch)=>{
-  console.log('submit values are ' + JSON.stringify(values));
   return dispatch(searchProject(values)).
   then((response)=>{
     !response.error ? dispatch(searchProjectSuccess(response.value.data.objdata)):dispatch(searchProjectFailure(response.payload.data))
@@ -69,7 +63,6 @@ class ProjectFilter extends Component{
       </PageBase>
     )
   }
-
 }
 
 export default  reduxForm({

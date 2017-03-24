@@ -78,7 +78,7 @@ class UserList extends Component {
     return (
       <PageBase title="Users List">
         <div>
-          <Link to="/newproject" >
+          <Link to="/newuser" >
             <FloatingActionButton style={styles.floatingActionButton}  iconStyle={{backgroundColor: blue700}}>
               <ContentAdd />
             </FloatingActionButton>

@@ -3,7 +3,6 @@ import {Link} from 'react-router';
 import RaisedButton from 'material-ui/RaisedButton';
 import MenuItem from 'material-ui/MenuItem';
 import {grey400,deepOrange500,green700} from 'material-ui/styles/colors';
-import Divider from 'material-ui/Divider';
 import PageBase from '../components/PageBase';
 import { reduxForm, Field, SubmissionError } from 'redux-form/immutable';
 import { renderTextField }   from '../common/renderTextField.jsx';
@@ -12,7 +11,6 @@ import {renderDateField} from '../common/renderDateField.jsx';
 import {addProject,addProjectSuccess,addProjectFailue} from '../actions/project.jsx';
 import ReactMaterialUiNotifications from '../common/renderNotification.jsx';
 import Done from 'material-ui/svg-icons/action/done';
-import Close from 'material-ui/svg-icons/navigation/close'
 import moment from 'moment'
 
 
@@ -68,7 +66,7 @@ class NewProject extends Component{
   renderSource(source){
    return source.map((item)=>{
      return(
-       <MenuItem key={item._id} value={item._id} primaryText={item.Title} />
+       <MenuItem key={item._id} value={item.Title} primaryText={item.Title} />
      )
    })
   }
