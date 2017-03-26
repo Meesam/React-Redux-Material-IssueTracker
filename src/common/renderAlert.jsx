@@ -8,67 +8,15 @@ import Divider from 'material-ui/Divider'
 import IconButton from 'material-ui/IconButton'
 import Done from 'material-ui/svg-icons/action/done';
 import Close from 'material-ui/svg-icons/navigation/close';
-
-const styles={
-  container:{
-    display: 'block',
-    textAlign: 'left',
-    borderRadius: 3,
-    margin: '12px auto'
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: typography.fontWeightLight,
-    marginBottom: 20
-  },
-  paper: {
-    padding: '15px 20px 40px 30px',
-    hight:'auto',
-    width:500
-  },
-  clear: {
-    clear: 'both'
-  },
-    iconButtonStyle :{
-    width: 36,
-    height: 36,
-    top: -3,
-    right: 4,
-    padding: 6
-  },
-
-  iconStyle :{
-    height: 18,
-    width: 18
-  },
-
-  listItemStyle :{
-    padding:'8px 8px 0 72px'
-  },
-
-  listStyle :{
-    position: 'relative'
-  },
-
-  overflowStyle :{
-    padding: '12px 0 12px 72px'
-  },
-
-  overflowContentStyle :{
-    paddingLeft: 72
-  },
-
-  secondaryTextStyle :{
-    marginTop: 8,
-    marginBottom: 8
-  }
-}
+import ReactTimeout from 'react-timeout'
 
 class Alert extends Component{
   constructor(props) {
     super(props)
+    this.state={
+      isAlert:"close"
+    }
   }
-
   getNotificationIcon(){
     let iconEl;
     let leftIconBodyStyle;
@@ -81,12 +29,12 @@ class Alert extends Component{
         margin: 0,
         left: 8,
         borderRadius: '50%',
-        backgroundColor: green700,
+        backgroundColor: this.props.iconColor ? this.props.iconColor : grey600,
         justifyContent: 'center',
         alignItems: 'center',
         display: 'flex'
       },
-      leftIcon = cloneElement(<Done />, {
+      leftIcon = cloneElement(this.props.alertIcon, {
         color: white,
         style: {
           margin: 0
@@ -100,11 +48,78 @@ class Alert extends Component{
 
   }
 
+  componentWillMount(){
+    if(this.props){
+      this.setState({isAlert:"open"})
+    };
+  }
+
   onCloseNotification = () => {
-    console.log('close are call');
+    this.setState({isAlert:"close"})
   }
 
   render(){
+   const styles={
+      container:{
+        display: this.state.isAlert=="open"?'block':'none',
+        textAlign: 'left',
+        borderRadius: 3,
+        bottom: 20,
+        right: 25,
+        position:'absolute'
+      },
+      title: {
+        fontSize: 24,
+        fontWeight: typography.fontWeightLight,
+        marginBottom: 20
+      },
+      paper: {
+        padding: '15px 20px 40px 30px',
+        hight:'auto',
+        width:500
+      },
+      clear: {
+        clear: 'both'
+      },
+      iconButtonStyle :{
+        width: 36,
+        height: 36,
+        top: -3,
+        right: 4,
+        padding: 6
+      },
+
+      iconStyle :{
+        height: 18,
+        width: 18
+      },
+
+      listItemStyle :{
+        padding:'8px 8px 0 72px'
+      },
+
+      listStyle :{
+        position: 'relative'
+      },
+
+      overflowStyle :{
+        padding: '12px 0 12px 72px'
+      },
+
+      overflowContentStyle :{
+        paddingLeft: 72
+      },
+
+      secondaryTextStyle :{
+        marginTop: 8,
+        marginBottom: 8
+      },
+
+      divider:{
+        backgroundColor: green700
+      }
+
+    }
     return(
       <ReactCSSTransitionGroup
         transitionName={{
@@ -122,12 +137,12 @@ class Alert extends Component{
       >
         <div style={styles.container}>
           <Paper style={styles.paper} zDepth={5}>
-            <h3 style={styles.title}>Success</h3>
-            <Divider/>
+            <h3 style={styles.title}>{this.props.title}</h3>
+            <Divider style={styles.divider}/>
             <div>
               <List style={styles.listStyle}>
                 <ListItem
-                  primaryText="Record added successfully !"
+                  primaryText={this.props.alertMsg?this.props.alertMsg : ''}
                   secondaryText=""
                   leftIcon={this.getNotificationIcon()}
                   insetChildren={true}

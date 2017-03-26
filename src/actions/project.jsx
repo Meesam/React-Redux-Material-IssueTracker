@@ -23,11 +23,11 @@
     RPP:5,
   }
 
-  export function fetchProject() {
+  export function fetchProject(pageInfo=null) {
     const request=axios({
       url:`${URL.ROOT_URL}/project`,
       method:'POST',
-      data:aTableInfo,
+      data:pageInfo ? pageInfo : aTableInfo,
       Headers:[]
     });
     return{
@@ -36,10 +36,13 @@
     }
   }
 
-  export function fetchProjectSuccess(projects) {
+  export function fetchProjectSuccess(projects,curpage) {
     return{
       type:FETCH_PROJECT_SUCCESS,
-      payload:projects
+      payload:{
+        projects:projects,
+        curPage:curpage
+      }
     }
   }
 

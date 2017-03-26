@@ -2,7 +2,7 @@ import React ,{Component,PropTypes} from 'react';
 import {Link} from 'react-router';
 import RaisedButton from 'material-ui/RaisedButton';
 import MenuItem from 'material-ui/MenuItem';
-import {grey400,deepOrange500,green700} from 'material-ui/styles/colors';
+import {grey400,deepOrange500,green700,red700} from 'material-ui/styles/colors';
 import PageBase from '../components/PageBase';
 import { reduxForm, Field, SubmissionError } from 'redux-form/immutable';
 import { renderTextField }   from '../common/renderTextField.jsx';
@@ -11,8 +11,10 @@ import {renderDateField} from '../common/renderDateField.jsx';
 import {addProject,addProjectSuccess,addProjectFailue} from '../actions/project.jsx';
 import ReactMaterialUiNotifications from '../common/renderNotification.jsx';
 import Done from 'material-ui/svg-icons/action/done';
+import Close from 'material-ui/svg-icons/navigation/close';
 import moment from 'moment'
 import Alert from '../common/renderAlert.jsx';
+
 
 const styles = {
   toggleDiv: {
@@ -33,6 +35,17 @@ const styles = {
   }
 };
 
+const validate = values => {
+  const errors = {}
+  const requiredFields = [ 'ProjectName', 'ProjectType','StartDate','EndDate' ,'Description']
+  requiredFields.forEach(field => {
+    if (!values[ field ]) {
+      errors[ field ] = 'Required'
+    }
+  })
+  return errors
+}
+
 
 class NewProject extends Component{
 
@@ -43,20 +56,6 @@ class NewProject extends Component{
   constructor(props){
     super(props);
   }
-
-  showNotification = (msg) => {
-    ReactMaterialUiNotifications.showNotification({
-      title: 'Success',
-      additionalText: msg,
-      icon: <Done />,
-      iconBadgeColor: green700,
-      overflowText: "",
-      timestamp: moment().format('h:mm A'),
-      autoHide:2000,
-      zDepth:5
-    })
-  }
-
 
   componentWillMount(){
     this.props.fetchProjectType();
@@ -70,24 +69,33 @@ class NewProject extends Component{
    })
   }
 
+  renderNotification(success){
+   let props={
+     alertType:'success',
+     alertIcon:<Done />,
+     iconColor:green700,
+     alertMsg:success,
+     title:"Success"
+   };
+   if(success){
+     return(<Alert  {...props} />);
+   }
+  }
+
   validateAndSave(values,dispatch) {
-    return dispatch(addProject(values)).
-    then((response)=>{
-      !response.error ? dispatch(addProjectSuccess(response.value.data.objdata)):dispatch(addProjectFailue(response.payload.data))
-    })
-  };
+    return dispatch(addProject(values)).then((response)=> {
+      !response.error ? dispatch(addProjectSuccess(response.value.data.objdata)) : dispatch(addProjectFailue(response.payload.data))
+     })
+  }
 
   render(){
     const {projectTypes}=this.props.projectTypeList;
     const {success}=this.props.newProject;
     const {handleSubmit} = this.props;
-    if(success){
-      {this.showNotification(success)}
-    }
-
     return(
       <PageBase title="Add Project">
         <form onSubmit={ handleSubmit(this.validateAndSave) }>
+          {this.renderNotification(success)}
           <Field name="ProjectName" type="text" label="Project Title" fullWidth={true} component={renderTextField} />
 
           <Field name="ProjectType" label="Project Type" fullWidth={true} component={renderSelectField}>
@@ -118,15 +126,14 @@ class NewProject extends Component{
             transitionLeave={true}
             maxNotifications={1}
           />
-          <Alert />
         </form>
-
       </PageBase>
     )
   }
 }
 
 export default  reduxForm({
-  form: 'NewProject'
+  form: 'NewProject',
+  validate
 })(NewProject)
 

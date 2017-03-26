@@ -9,6 +9,8 @@ import Pagination from '../common/renderPagination.jsx';
 import ProjectFilter from './projectFilteroption.jsx';
 import ProjectSort from './projectSortOptions.jsx';
 import moment from 'moment';
+import { reduxForm, Field, SubmissionError } from 'redux-form/immutable';
+import {fetchProject,fetchProjectSuccess,fetchProjectFailure} from '../actions/project.jsx';
 
 const styles = {
   floatingActionButton: {
@@ -49,18 +51,29 @@ const aTableInfo={
 class ProjectList extends Component{
   constructor(props){
     super(props)
+    this.moveNext=this.moveNext.bind(this);
+    this.movePrev=this.movePrev.bind(this);
   }
 
   componentWillMount(){
-    this.props.fetchProject();
+    this.props.fetchProject(aTableInfo);
   }
 
-  /*moveNext = () => {
-    Pagination.moveNext({
-      CurPage:1,
-      RPP:5
-    })
-  }*/
+  moveNext(){
+    let pageInfo={
+      CurPage:this.props.projectList.curPage + 1,
+      RPP:5,
+    }
+    this.props.fetchProject(pageInfo);
+  }
+
+  movePrev(){
+    let pageInfo={
+      CurPage:this.props.projectList.curPage - 1,
+      RPP:5,
+    }
+    this.props.fetchProject(pageInfo);
+  }
 
   makeProjectData(project) {
     var arr = []
@@ -79,7 +92,7 @@ class ProjectList extends Component{
   }
 
   render(){
-    const { projects,error,loading } = this.props.projectList
+    const { projects,error,loading,curPage } = this.props.projectList
     if(loading){
       return <div className="alert-info">Wait projects are loading</div>
     }
@@ -111,7 +124,7 @@ class ProjectList extends Component{
             </div>
             <div className="row">
               <div className="col-xs-12 col-sm-6 col-md-6 col-lg-3 m-b-15">
-                <Pagination pageInfo={aTableInfo}  />
+                <Pagination pageInfo={aTableInfo} moveNext={this.moveNext} movePrev={this.movePrev}  />
               </div>
             </div>
           </div>
