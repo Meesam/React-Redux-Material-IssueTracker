@@ -6,11 +6,12 @@ import {pink500, grey200, grey500,blue700} from 'material-ui/styles/colors';
 import PageBase from '../common/renderPageBase.jsx';
 import RenderList from '../common/renderList.jsx';
 import Pagination from '../common/renderPagination.jsx';
-import ProjectFilter from './projectFilteroption.jsx';
 import ProjectSort from './projectSortOptions.jsx';
 import moment from 'moment';
 import { reduxForm, Field, SubmissionError } from 'redux-form/immutable';
-import {fetchProject,fetchProjectSuccess,fetchProjectFailure} from '../actions/project.jsx';
+import {searchProject,searchProjectSuccess,searchProjectFailure} from '../actions/project.jsx';
+import RenderSearch from '../common/renderSearchField.jsx';
+
 
 const styles = {
   floatingActionButton: {
@@ -48,11 +49,19 @@ const aTableInfo={
   RPP:5,
 }
 
+const searchProjects=(values,dispatch)=>{
+  return dispatch(searchProject(values)).
+  then((response)=>{
+    !response.error ? dispatch(searchProjectSuccess(response.value.data.objdata)):dispatch(searchProjectFailure(response.payload.data))
+  })
+}
+
 class ProjectList extends Component{
   constructor(props){
     super(props)
     this.moveNext=this.moveNext.bind(this);
     this.movePrev=this.movePrev.bind(this);
+    this.renderSource=this.renderSource.bind(this);
   }
 
   componentWillMount(){
@@ -74,6 +83,24 @@ class ProjectList extends Component{
     }
     this.props.fetchProject(pageInfo);
   }
+
+  renderSource(){
+    return [{_id:1,Title:'Internal'},{_id:2,Title:'External'}]
+  }
+
+  searchOption=[
+    {
+      type:'text',
+      label:'Project Title',
+      name:'ProjectName'
+    },
+    {
+      type:'selectField',
+      label:'Project Type',
+      name:'ProjectType',
+      source:this.renderSource
+    }
+  ];
 
   makeProjectData(project) {
     var arr = []
@@ -111,7 +138,7 @@ class ProjectList extends Component{
           <div className="col-xs-12 col-sm-5 col-md-5 col-lg-3 m-b-15 ">
             <div className="row">
               <div className="col-xs-12 col-sm-5 col-md-5 col-lg-12 m-b-15 ">
-                <ProjectFilter />
+                <RenderSearch searchOption={this.searchOption} onSearch={searchProjects} />
               </div>
             </div>
             <div className="row-fluid">

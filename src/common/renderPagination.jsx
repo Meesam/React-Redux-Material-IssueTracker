@@ -19,7 +19,7 @@ const style = {
   },
   container:{
     position:'relative',
-    bottom:390,
+    bottom:360,
     left:360
   }
 };
@@ -53,7 +53,7 @@ const style = {
   }
 }
 
-Pagination.proptTypes={
+Pagination.propTypes={
    pageInfo:PropTypes.object.isRequired,
    moveNext:PropTypes.func.isRequired,
    movePrev:PropTypes.func.isRequired

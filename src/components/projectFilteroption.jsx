@@ -4,8 +4,6 @@ import { renderSelectField } from '../common/renderSelectField.jsx';
 import {renderTextField} from '../common/renderTextField.jsx';
 import { reduxForm, Field, SubmissionError } from 'redux-form/immutable';
 import MenuItem from 'material-ui/MenuItem';
-import Chip from 'material-ui/Chip';
-import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import {searchProject,searchProjectSuccess,searchProjectFailure} from '../actions/project.jsx';
 

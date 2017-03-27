@@ -46,7 +46,6 @@ const validate = values => {
   return errors
 }
 
-
 class NewProject extends Component{
 
   static contextTypes = {
