@@ -3,6 +3,7 @@ import {fetchProject,fetchProjectSuccess,fetchProjectFailure} from '.././actions
 import ProjectList from '.././components/projectList.jsx';
 
 const mapStateToProps=(state)=>{
+  //console.log('projectList ' , state.projects.projectList);
   return{
     projectList:state.projects.projectList
   }

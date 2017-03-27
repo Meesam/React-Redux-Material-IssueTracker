@@ -14,10 +14,10 @@ export default function (state=INITIAL_STATE,action) {
   switch(action.type){
 
     case FETCH_PROJECT:
+      console.log('state ' , state)
       return{...state,projectList:{projects:[],curPage:1,error:null,loading:true}};
 
     case FETCH_PROJECT_SUCCESS:
-      console.log('payload are ' , action.payload);
       return{...state,projectList:{projects:action.payload.projects,curPage:action.payload.curPage,error:null,loading:false}};
 
     case FETCH_PROJECT_FAILURE:

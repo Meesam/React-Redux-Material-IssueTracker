@@ -32,7 +32,8 @@
     });
     return{
       type:FETCH_PROJECT,
-      payload:request
+      payload:request,
+      loading:true
     }
   }
 

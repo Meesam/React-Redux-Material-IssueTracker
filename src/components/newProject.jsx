@@ -4,7 +4,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import MenuItem from 'material-ui/MenuItem';
 import {grey400,deepOrange500,green700,red700} from 'material-ui/styles/colors';
 import PageBase from '../components/PageBase';
-import { reduxForm, Field, SubmissionError } from 'redux-form/immutable';
+import { reduxForm, Field, SubmissionError } from 'redux-form';
 import { renderTextField }   from '../common/renderTextField.jsx';
 import { renderSelectField } from '../common/renderSelectField.jsx';
 import {renderDateField} from '../common/renderDateField.jsx';
@@ -55,6 +55,7 @@ class NewProject extends Component{
 
   constructor(props){
     super(props);
+    this.validateAndSave=this.validateAndSave.bind(this);
   }
 
   componentWillMount(){
@@ -96,6 +97,7 @@ class NewProject extends Component{
   }
 
   validateAndSave(values,dispatch) {
+    console.log('submit props are ' , this.props);
     return dispatch(addProject(values)).
     then((response)=> {
        dispatch(addProjectSuccess(response.value.data.objdata))
@@ -108,7 +110,7 @@ class NewProject extends Component{
   render(){
     const {projectTypes}=this.props.projectTypeList;
     const {success,error}=this.props.newProject;
-    const {asyncValidating,handleSubmit,pristine, reset, submitting} = this.props;
+    const {asyncValidating,handleSubmit,pristine, reset, submitting, invalid} = this.props;
     return(
       <PageBase title="Add Project">
         <form onSubmit={ handleSubmit(this.validateAndSave) }>
@@ -131,7 +133,7 @@ class NewProject extends Component{
             <Link to="/project">
               <RaisedButton label="Cancel"/>
             </Link>
-            <RaisedButton label="Save" style={styles.saveButton} disabled={submitting} type="submit" primary={true}/>
+            <RaisedButton  label="Save" style={styles.saveButton} disabled={ invalid ||submitting } type="submit" primary={true}/>
           </div>
           <ReactMaterialUiNotifications
             desktop={true}
