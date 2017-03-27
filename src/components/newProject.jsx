@@ -14,6 +14,7 @@ import Done from 'material-ui/svg-icons/action/done';
 import Close from 'material-ui/svg-icons/navigation/close';
 import moment from 'moment'
 import Alert from '../common/renderAlert.jsx';
+import asyncValidation from '../common/asyncValidation.jsx';
 
 
 const styles = {
@@ -81,20 +82,39 @@ class NewProject extends Component{
    }
   }
 
+  renderError(error){
+    let props={
+      alertType:'error',
+      alertIcon:<Close />,
+      iconColor:red700,
+      alertMsg:"Oops! a server error occured , please try again.",
+      title:"Error"
+    };
+    if(error){
+      return(<Alert  {...props} />);
+    }
+  }
+
   validateAndSave(values,dispatch) {
-    return dispatch(addProject(values)).then((response)=> {
-      !response.error ? dispatch(addProjectSuccess(response.value.data.objdata)) : dispatch(addProjectFailue(response.payload.data))
-     })
+    return dispatch(addProject(values)).
+    then((response)=> {
+       dispatch(addProjectSuccess(response.value.data.objdata))
+    })
+    .catch((error)=>{
+       dispatch(addProjectFailue(error))
+    })
   }
 
   render(){
     const {projectTypes}=this.props.projectTypeList;
-    const {success}=this.props.newProject;
-    const {handleSubmit} = this.props;
+    const {success,error}=this.props.newProject;
+    const {asyncValidating,handleSubmit,pristine, reset, submitting} = this.props;
     return(
       <PageBase title="Add Project">
         <form onSubmit={ handleSubmit(this.validateAndSave) }>
           {this.renderNotification(success)}
+          {this.renderError(error)}
+
           <Field name="ProjectName" type="text" label="Project Title" fullWidth={true} component={renderTextField} />
 
           <Field name="ProjectType" label="Project Type" fullWidth={true} component={renderSelectField}>
@@ -111,7 +131,7 @@ class NewProject extends Component{
             <Link to="/project">
               <RaisedButton label="Cancel"/>
             </Link>
-            <RaisedButton label="Save" style={styles.saveButton} type="submit" primary={true}/>
+            <RaisedButton label="Save" style={styles.saveButton} disabled={submitting} type="submit" primary={true}/>
           </div>
           <ReactMaterialUiNotifications
             desktop={true}

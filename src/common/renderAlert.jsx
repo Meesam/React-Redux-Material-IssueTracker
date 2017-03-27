@@ -2,7 +2,7 @@ import React,{Component,PropTypes,cloneElement} from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 import Paper from 'material-ui/Paper';
 import {typography} from 'material-ui/styles';
-import {grey600,green700,white} from 'material-ui/styles/colors';
+import {grey600,green700,white,red700} from 'material-ui/styles/colors';
 import {List, ListItem} from 'material-ui/List'
 import Divider from 'material-ui/Divider'
 import IconButton from 'material-ui/IconButton'
@@ -116,7 +116,7 @@ class Alert extends Component{
       },
 
       divider:{
-        backgroundColor: green700
+        backgroundColor: this.props.alertType=="error" ? red700 : green700
       }
 
     }

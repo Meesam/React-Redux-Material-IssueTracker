@@ -6,19 +6,6 @@ import { reduxForm, Field, SubmissionError } from 'redux-form/immutable';
 import MenuItem from 'material-ui/MenuItem';
 import RaisedButton from 'material-ui/RaisedButton';
 
-const searchOption=[
-  {
-    type:'text',
-    label:'Project Title',
-    name:'ProjectName'
-  },
-  {
-    type:'selectField',
-    label:'Project Type',
-    name:'ProjectType'
-  }
-];
-
 const styles = {
   chip: {
     margin: 4,
@@ -42,7 +29,6 @@ class RenderSearch extends Component{
     this.renderSearchField=this.renderSearchField.bind(this);
     this.renderSource=this.renderSource.bind(this);
   }
-
 
   renderSource(source){
     return source.map((item)=>{
@@ -86,7 +72,6 @@ class RenderSearch extends Component{
       </PageBase>
     )
   }
-
 }
 
 RenderSearch.propTypes={

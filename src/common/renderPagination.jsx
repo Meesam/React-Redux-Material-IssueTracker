@@ -11,8 +11,7 @@ const style = {
     margin: 20,
     textAlign: 'center',
     display: 'inline-block',
-    background: blue700,
-
+    background: blue700
   },
   arrow:{
     color:white
