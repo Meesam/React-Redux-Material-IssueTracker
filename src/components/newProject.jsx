@@ -8,13 +8,13 @@ import { reduxForm, Field, SubmissionError } from 'redux-form';
 import { renderTextField }   from '../common/renderTextField.jsx';
 import { renderSelectField } from '../common/renderSelectField.jsx';
 import {renderDateField} from '../common/renderDateField.jsx';
-import {addProject,addProjectSuccess,addProjectFailue} from '../actions/project.jsx';
+import {addProject,addProjectSuccess,addProjectFailue,asyncValidation,asyncValidateSuccess,asyncValidateFailure} from '../actions/project.jsx';
 import ReactMaterialUiNotifications from '../common/renderNotification.jsx';
 import Done from 'material-ui/svg-icons/action/done';
 import Close from 'material-ui/svg-icons/navigation/close';
 import moment from 'moment'
 import Alert from '../common/renderAlert.jsx';
-import asyncValidation from '../common/asyncValidation.jsx';
+
 
 
 const styles = {
@@ -46,6 +46,15 @@ const validate = values => {
   })
   return errors
 }
+
+const asyncValidate=(values,dispatch)=> {
+  return dispatch(asyncValidation(values.ProjectName)).then((response)=>{
+        dispatch(asyncValidateSuccess(response.value.data.Count==0?false:true));
+     })
+    .catch((error)=>{
+      dispatch(asyncValidateFailure(error));
+    });
+};
 
 class NewProject extends Component{
 
@@ -96,8 +105,20 @@ class NewProject extends Component{
     }
   }
 
+  renderAsyncValidationError(isExist){
+    let props={
+      alertType:'error',
+      alertIcon:<Close />,
+      iconColor:red700,
+      alertMsg:"Oops! project name already exists , please try diffrent name",
+      title:"Error"
+    };
+    if(isExist){
+      return(<Alert  {...props} />);
+    }
+  }
+
   validateAndSave(values,dispatch) {
-    console.log('submit props are ' , this.props);
     return dispatch(addProject(values)).
     then((response)=> {
        dispatch(addProjectSuccess(response.value.data.objdata))
@@ -110,13 +131,16 @@ class NewProject extends Component{
   render(){
     const {projectTypes}=this.props.projectTypeList;
     const {success,error}=this.props.newProject;
+    console.log('isExist ' , this.props.aysncValidate);
+    const {isExist}=this.props.aysncValidate;
+
     const {asyncValidating,handleSubmit,pristine, reset, submitting, invalid} = this.props;
     return(
       <PageBase title="Add Project">
         <form onSubmit={ handleSubmit(this.validateAndSave) }>
           {this.renderNotification(success)}
           {this.renderError(error)}
-
+          {this.renderAsyncValidationError(isExist)}
           <Field name="ProjectName" type="text" label="Project Title" fullWidth={true} component={renderTextField} />
 
           <Field name="ProjectType" label="Project Type" fullWidth={true} component={renderSelectField}>
@@ -155,6 +179,7 @@ class NewProject extends Component{
 
 export default  reduxForm({
   form: 'NewProject',
-  validate
+  validate,
+  asyncValidate
 })(NewProject)
 

@@ -5,7 +5,8 @@ import NewProject from '../components/newProject.jsx';
 const mapStateToProps=(state)=>{
   return{
     projectTypeList:state.projects.projectTypeList,
-    newProject:state.projects.newProject
+    newProject:state.projects.newProject,
+    aysncValidate:state.projects.aysncValidate
   }
 }
 

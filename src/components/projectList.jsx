@@ -2,7 +2,7 @@ import React,{ Component } from 'react';
 import {Link} from 'react-router';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
-import {pink500, grey200, grey500,blue700} from 'material-ui/styles/colors';
+import {pink500, grey200, grey500,blue700,red700} from 'material-ui/styles/colors';
 import PageBase from '../common/renderPageBase.jsx';
 import RenderList from '../common/renderList.jsx';
 import Pagination from '../common/renderPagination.jsx';
@@ -11,6 +11,9 @@ import moment from 'moment';
 import { reduxForm, Field, SubmissionError } from 'redux-form/immutable';
 import {searchProject,searchProjectSuccess,searchProjectFailure} from '../actions/project.jsx';
 import RenderSearch from '../common/renderSearchField.jsx';
+import CircularProgress from 'material-ui/CircularProgress';
+import Close from 'material-ui/svg-icons/navigation/close';
+import Alert from '../common/renderAlert.jsx';
 
 
 const styles = {
@@ -41,6 +44,18 @@ const styles = {
     edit: {
       width: '10%'
     }
+  },
+  container:{
+    position: 'fixed',
+    zIndex: '999',
+    height: '2em',
+    width: '2em',
+    overflow: 'show',
+    margin: 'auto',
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0,
   }
 };
 
@@ -52,7 +67,10 @@ const aTableInfo={
 const searchProjects=(values,dispatch)=>{
   return dispatch(searchProject(values)).
   then((response)=>{
-    !response.error ? dispatch(searchProjectSuccess(response.value.data.objdata)):dispatch(searchProjectFailure(response.payload.data))
+    dispatch(searchProjectSuccess(response.value.data.objdata))
+  })
+  .catch((error)=>{
+    dispatch(searchProjectFailure(error))
   })
 }
 
@@ -118,13 +136,29 @@ class ProjectList extends Component{
     return arr;
   }
 
+  renderError(error){
+    let props={
+      alertType:'error',
+      alertIcon:<Close />,
+      iconColor:red700,
+      alertMsg:"Oops! a server error occured , please try again.",
+      title:"Error"
+    };
+    if(error){
+      return(<Alert  {...props} />);
+    }
+  }
+
   render(){
     const { projects,error,loading,curPage } = this.props.projectList
     if(loading){
-      return <div className="alert-info">Wait projects are loading</div>
+      return(
+        <div style={styles.container}>
+          <CircularProgress size={80} thickness={5} />
+        </div>)
     }
     else if(error){
-      return <div className="alert-error">${error.message}</div>
+      {this.renderError(error)}
     }
     return(
       <PageBase title="Project List">

@@ -17,6 +17,9 @@
   export const SEARCH_PROJECT="SEARCH_PROJECT";
   export const SEARCH_PROJECT_SUCCESS="SEARCH_PROJECT_SUCCESS";
   export const SEARCH_PROJECT_FAILURE="SEARCH_PROJECT_FAILURE";
+  export const ASYNC_VALIDATE="ASYNC_VALIDATE";
+  export const ASYNC_VALIDATE_SUCCESS="ASYNC_VALIDATE_SUCCESS";
+  export const ASYNC_VALIDATE_FAILURE="ASYNC_VALIDATE_FAILURE";
 
   const aTableInfo={
     CurPage:1,
@@ -32,8 +35,7 @@
     });
     return{
       type:FETCH_PROJECT,
-      payload:request,
-      loading:true
+      payload:request
     }
   }
 
@@ -158,6 +160,32 @@
   export function searchProjectFailure(error) {
     return{
       type:SEARCH_PROJECT_FAILURE,
+      payload:error
+    }
+  }
+
+  export function asyncValidation(input) {
+    const request=axios({
+      url:`${URL.ROOT_URL}/project/${input}`,
+      method:'GET',
+      Headers:[]
+    });
+    return{
+      type:ASYNC_VALIDATE,
+      payload:request
+    }
+  }
+
+  export function asyncValidateSuccess(result) {
+    return{
+      type:ASYNC_VALIDATE_SUCCESS,
+      payload:result
+    }
+  }
+
+  export function asyncValidateFailure(error) {
+    return{
+      type:ASYNC_VALIDATE_FAILURE,
       payload:error
     }
   }
