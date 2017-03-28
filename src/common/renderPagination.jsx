@@ -11,47 +11,51 @@ const style = {
     margin: 20,
     textAlign: 'center',
     display: 'inline-block',
-    background: blue700,
-
+    background: blue700
   },
   arrow:{
     color:white
+  },
+  container:{
+    position:'relative',
+    bottom:360,
+    left:360
   }
 };
 
  class Pagination extends Component{
   constructor(props){
     super(props)
+    this.moveNext=this.moveNext.bind(this);
+    this.movePrev=this.movePrev.bind(this);
   }
 
-  moveNext(dispatch){
-    console.log('pageInfo are ' + JSON.stringify(this.props.pageInfo));
-     var aTableInfo={
-        CurPage:this.props.pageInfo.CurPage,
-        RPP:this.props.pageInfo.RPP,
-      }
-      return dispatch(this.props.pageInfo.fetchProject(aTableInfo)).
-      then((response)=>{
-        !response.error ? dispatch(this.props.pageInfo.fetchProjectSuccess(response.value.data.objdata)):dispatch(this.props.pageInfo.fetchProjectFailure(response.payload.data))
-      })
+  moveNext(){
+    this.props.moveNext();
+  }
+
+  movePrev(){
+    this.props.movePrev();
   }
 
   render(){
     return(
-      <div>
+      <div style={style.container}>
         <Paper style={style.paper} zDepth={5}>
-         <MenuItem onTouchTap={this.moveNext.bind(this)} style={style.arrow} primaryText="Prev" />
+         <MenuItem onTouchTap={this.movePrev} style={style.arrow} primaryText="Prev" />
         </Paper>
         <Paper style={style.paper} zDepth={5}>
-          <MenuItem style={style.arrow} primaryText="Next" />
+          <MenuItem onTouchTap={this.moveNext} style={style.arrow} primaryText="Next" />
         </Paper>
       </div>
     )
   }
 }
 
-Pagination.proptTypes={
-   pageInfo:PropTypes.object.isRequired
+Pagination.propTypes={
+   pageInfo:PropTypes.object.isRequired,
+   moveNext:PropTypes.func.isRequired,
+   movePrev:PropTypes.func.isRequired
 }
 
 export default Pagination;

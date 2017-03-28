@@ -3,7 +3,7 @@ import { FETCH_PROJECT,FETCH_PROJECT_SUCCESS,FETCH_PROJECT_FAILURE,RESETS_PROJEC
   SEARCH_PROJECT,SEARCH_PROJECT_SUCCESS,SEARCH_PROJECT_FAILURE } from '.././actions/project.jsx'
 
 const INITIAL_STATE={
-  projectList:{projects:[],error:null,loading:false},
+  projectList:{projects:[],curPage:1,error:null,loading:false},
   projects:{project:{},error:null,loading:false},
   newProject:{success:null,error:null,loading:false},
   projectTypeList:{projectTypes:[],error:null,loading:false},
@@ -14,14 +14,15 @@ export default function (state=INITIAL_STATE,action) {
   switch(action.type){
 
     case FETCH_PROJECT:
-      return{...state,projectList:{projects:[],error:null,loading:true}};
+      console.log('state ' , state)
+      return{...state,projectList:{projects:[],curPage:1,error:null,loading:true}};
 
     case FETCH_PROJECT_SUCCESS:
-      return{...state,projectList:{projects:action.payload,error:null,loading:false}};
+      return{...state,projectList:{projects:action.payload.projects,curPage:action.payload.curPage,error:null,loading:false}};
 
     case FETCH_PROJECT_FAILURE:
       error = action.payload || {message: action.payload.message};
-      return{...state,projectList:{projects:[],error:error,loading:false}};
+      return{...state,projectList:{projects:[],curPage:1,error:error,loading:false}};
 
     case SEARCH_PROJECT:
       return{...state,projectList:{projects:[],error:null,loading:true}};

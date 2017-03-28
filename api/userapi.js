@@ -53,7 +53,6 @@ let Logger=require('../core/Logger');
   });
 
   apiRoutes.post('/userDetails',function (req,resp,next) {
-     console.log(req.body.Obj);
       usersModule.addUserDetails(req.body.Obj,function(data,err){
        if(err) return next(err);
        else resp.json(data);
@@ -61,7 +60,8 @@ let Logger=require('../core/Logger');
   });
 
   apiRoutes.post('/user/add',function (req,resp,next) {
-    usersModule.createUsers(req.body.Obj,function(data,err){
+    console.log(JSON.stringify(req.body));
+    usersModule.createUsers(req.body,function(data,err){
         if(err) return next(err);
         else resp.json(data);
     });

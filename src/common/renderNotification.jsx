@@ -4,7 +4,6 @@
 import React, {PropTypes, cloneElement, Component} from 'react'
 import propTypes from 'material-ui/utils/propTypes'
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
-
 import Paper from 'material-ui/Paper'
 import {List, ListItem} from 'material-ui/List'
 import Divider from 'material-ui/Divider'
@@ -237,13 +236,12 @@ class Notification extends Component {
 
   componentWillMount() {
     this.setState({
-      open: this.props.open
+      open: true
     })
     /**
      * if autohide is set then use it
      */
     if (this.props.autoHide) {
-     console.log('autoHide ' + this.props.autoHide);
       this.autoHideTimeout = setTimeout(() => {
         this.setState({open: false})
       }, this.props.autoHide)
@@ -276,6 +274,7 @@ class Notification extends Component {
    * cancel the settimeout function of the autohide method if the open is changed before timeout ends
    */
   onCloseNotification = () => {
+    console.log('close are call');
     clearTimeout(this.autoHideTimeout)
     this.setState({open: false})
   }

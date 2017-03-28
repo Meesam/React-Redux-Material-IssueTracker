@@ -7,29 +7,29 @@ let util=require('util');
 let mongoose=require('mongoose');
 let Projects = mongoose.model('Projects');
 
-exports.getAllProject=function(aTableInfo,callback){
-	console.log('aTableInfo ' +  JSON.stringify(aTableInfo));
-	let totalRecord=null;
-	let perPage = aTableInfo.RPP
-	 , page = Math.max(0, aTableInfo.CurPage);
-	Projects.count({},function(err,data){
-		if(err)
-		totalRecord=0;
-		else
-			totalRecord=data;
-	});
-	Projects.find(function(err,data){
-		if(err)
-			callback(null,err);
-		else {
-		let	obj = {
-				 status: 'success',
-			    data: data
-			};
-			callback(globalobj.globalObject(obj));
-		}
-	}).skip(perPage * (page-1)).limit(perPage).sort('ProjectName');;
-};
+	exports.getAllProject=function(aTableInfo,callback){
+		console.log('aTableInfo ' +  JSON.stringify(aTableInfo));
+		let totalRecord=null;
+		let perPage = aTableInfo.RPP
+		 , page = Math.max(0, aTableInfo.CurPage);
+		Projects.count({},function(err,data){
+			if(err)
+			totalRecord=0;
+			else
+				totalRecord=data;
+		});
+		Projects.find(function(err,data){
+			if(err)
+				callback(null,err);
+			else {
+			let	obj = {
+					 status: 'success',
+						data: data
+				};
+				callback(globalobj.globalObject(obj));
+			}
+		}).skip(perPage * (page-1)).limit(perPage).sort('ProjectName');;
+	};
 
 
   exports.getSearchProject=function(aTableInfo,callback){
@@ -37,13 +37,30 @@ exports.getAllProject=function(aTableInfo,callback){
     let totalRecord=null;
     let perPage = aTableInfo.RPP
       , page = Math.max(0, aTableInfo.CurPage);
-    Projects.count({'ProjectName' : new RegExp(aTableInfo.ProjectName, 'i')},function(err,data){
+    let mongoqueryfilter;
+    if(aTableInfo.ProjectName){
+
+    	mongoqueryfilter={'ProjectName' : new RegExp(aTableInfo.ProjectName, 'i')}
+
+		} else if(aTableInfo.ProjectType){
+
+    	mongoqueryfilter={'ProjectType' : aTableInfo.ProjectType}
+
+		} else if(aTableInfo.ProjectName && aTableInfo.ProjectType){
+
+			mongoqueryfilter={'ProjectName' : new RegExp(aTableInfo.ProjectName, 'i'),'ProjectType':aTableInfo.ProjectType};
+		} else {
+      mongoqueryfilter={};
+		}
+
+    //let mongoqueryfilter={'ProjectName' : new RegExp(aTableInfo.ProjectName, 'i'),'ProjectType':aTableInfo.ProjectType};
+    Projects.count(mongoqueryfilter,function(err,data){
       if(err)
         totalRecord=0;
       else
         totalRecord=data;
     });
-    Projects.find({'ProjectName' : new RegExp(aTableInfo.ProjectName, 'i')},function(err,data){
+    Projects.find(mongoqueryfilter,function(err,data){
       if(err)
         callback(null,err);
       else {
@@ -53,7 +70,7 @@ exports.getAllProject=function(aTableInfo,callback){
         };
         callback(globalobj.globalObject(obj));
       }
-    }).skip(perPage * (page-1)).limit(perPage).sort('ProjectName');;
+    }).skip(perPage * (page-1)).limit(perPage).sort('ProjectName');
   };
 
 exports.addProject=function(projectdetails,callback){

@@ -18,23 +18,32 @@
   export const SEARCH_PROJECT_SUCCESS="SEARCH_PROJECT_SUCCESS";
   export const SEARCH_PROJECT_FAILURE="SEARCH_PROJECT_FAILURE";
 
-  export function fetchProject(pageInfo) {
+  const aTableInfo={
+    CurPage:1,
+    RPP:5,
+  }
+
+  export function fetchProject(pageInfo=null) {
     const request=axios({
       url:`${URL.ROOT_URL}/project`,
       method:'POST',
-      data:pageInfo,
+      data:pageInfo ? pageInfo : aTableInfo,
       Headers:[]
     });
     return{
       type:FETCH_PROJECT,
-      payload:request
+      payload:request,
+      loading:true
     }
   }
 
-  export function fetchProjectSuccess(projects) {
+  export function fetchProjectSuccess(projects,curpage) {
     return{
       type:FETCH_PROJECT_SUCCESS,
-      payload:projects
+      payload:{
+        projects:projects,
+        curPage:curpage
+      }
     }
   }
 
@@ -125,7 +134,8 @@
   }
 
   export function searchProject(pageInfo) {
-    console.log('pageInfo are ' + JSON.stringify(pageInfo));
+    pageInfo.CurPage=aTableInfo.CurPage;
+    pageInfo.RPP=aTableInfo.RPP;
     const request=axios({
       url:`${URL.ROOT_URL}/project/search`,
       method:'POST',
