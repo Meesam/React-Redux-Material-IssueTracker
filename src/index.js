@@ -40,6 +40,7 @@ render(
         <Route path="project" component={ProjectList}/>
         <Route path="project/:Id" component={ViewProjectIndex}/>
         <Route path="newproject" component={NewProject}/>
+        <Route path="editproject/:Id" component={NewProject}/>
         <Route path="newuser" component={NewUser}/>
         <Route path="users" component={UserList}/>
         <Route path="*" component={NotFoundPage}/>

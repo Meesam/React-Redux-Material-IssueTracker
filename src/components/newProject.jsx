@@ -4,18 +4,15 @@ import RaisedButton from 'material-ui/RaisedButton';
 import MenuItem from 'material-ui/MenuItem';
 import {grey400,deepOrange500,green700,red700} from 'material-ui/styles/colors';
 import PageBase from '../components/PageBase';
-import { reduxForm, Field, SubmissionError } from 'redux-form';
+import { reduxForm, Field, SubmissionError , initialize } from 'redux-form';
 import { renderTextField }   from '../common/renderTextField.jsx';
 import { renderSelectField } from '../common/renderSelectField.jsx';
 import {renderDateField} from '../common/renderDateField.jsx';
 import {addProject,addProjectSuccess,addProjectFailue,asyncValidation,asyncValidateSuccess,asyncValidateFailure} from '../actions/project.jsx';
-import ReactMaterialUiNotifications from '../common/renderNotification.jsx';
 import Done from 'material-ui/svg-icons/action/done';
 import Close from 'material-ui/svg-icons/navigation/close';
 import moment from 'moment'
 import Alert from '../common/renderAlert.jsx';
-
-
 
 const styles = {
   toggleDiv: {
@@ -57,18 +54,26 @@ const asyncValidate=(values,dispatch)=> {
 };
 
 class NewProject extends Component{
-
   static contextTypes = {
     router: PropTypes.object
   };
 
-  constructor(props){
+  constructor(props) {
     super(props);
-    this.validateAndSave=this.validateAndSave.bind(this);
+    this.validateAndSave = this.validateAndSave.bind(this);
+    this.state = {};
   }
 
   componentWillMount(){
     this.props.fetchProjectType();
+    this.props.dispatch(initialize('NewProject',this.props.project[0] , ['ProjectName', 'ProjectType','StartDate','EndDate' ,'Description']));
+  }
+
+  componentDidMount(){
+    if(this.props.projectId){
+      this.props.fectchProjectById(this.props.projectId);
+
+    }
   }
 
   renderSource(source){
@@ -121,7 +126,8 @@ class NewProject extends Component{
   validateAndSave(values,dispatch) {
     return dispatch(addProject(values)).
     then((response)=> {
-       dispatch(addProjectSuccess(response.value.data.objdata))
+       dispatch(addProjectSuccess(response.value.data.objdata));
+      this.props.dispatch(initialize('NewProject', {}));
     })
     .catch((error)=>{
        dispatch(addProjectFailue(error))
@@ -131,12 +137,14 @@ class NewProject extends Component{
   render(){
     const {projectTypes}=this.props.projectTypeList;
     const {success,error}=this.props.newProject;
-    console.log('isExist ' , this.props.aysncValidate);
     const {isExist}=this.props.aysncValidate;
+    const{project}=this.props.project;
 
     const {asyncValidating,handleSubmit,pristine, reset, submitting, invalid} = this.props;
+    console.log('props ' , this.props);
+    console.log('project ' , project);
     return(
-      <PageBase title="Add Project">
+      <PageBase title={this.props.projectId ? "Edit Project" : "Add Project"}>
         <form onSubmit={ handleSubmit(this.validateAndSave) }>
           {this.renderNotification(success)}
           {this.renderError(error)}
@@ -157,20 +165,8 @@ class NewProject extends Component{
             <Link to="/project">
               <RaisedButton label="Cancel"/>
             </Link>
-            <RaisedButton  label="Save" style={styles.saveButton} disabled={ invalid ||submitting } type="submit" primary={true}/>
+            <RaisedButton  label="Save" style={styles.saveButton} disabled={ invalid || submitting } type="submit" primary={true}/>
           </div>
-          <ReactMaterialUiNotifications
-            desktop={true}
-            transitionName={{
-              leave: 'dummy',
-              leaveActive: 'fadeOut',
-              appear: 'dummy',
-              appearActive: 'zoomInUp'
-            }}
-            transitionAppear={true}
-            transitionLeave={true}
-            maxNotifications={1}
-          />
         </form>
       </PageBase>
     )

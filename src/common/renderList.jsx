@@ -68,7 +68,7 @@ class RenderList extends Component{
   }
 
  _handleTouchTap(id) {
-   this.context.router.push('/project/'+id);
+   this.context.router.push('/editproject/'+id);
   }
 
   expandedText(text){
