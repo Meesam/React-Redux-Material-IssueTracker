@@ -61,19 +61,17 @@ class NewProject extends Component{
   constructor(props) {
     super(props);
     this.validateAndSave = this.validateAndSave.bind(this);
-    this.state = {};
   }
 
   componentWillMount(){
     this.props.fetchProjectType();
-    this.props.dispatch(initialize('NewProject',this.props.project[0] , ['ProjectName', 'ProjectType','StartDate','EndDate' ,'Description']));
+    if(this.props.projectId){
+      this.props.fectchProjectById(this.props.projectId);
+    }
   }
 
   componentDidMount(){
-    if(this.props.projectId){
-      this.props.fectchProjectById(this.props.projectId);
 
-    }
   }
 
   renderSource(source){
@@ -134,6 +132,10 @@ class NewProject extends Component{
     })
   }
 
+  formRender(values){
+    console.log('values ', values);
+  }
+
   render(){
     const {projectTypes}=this.props.projectTypeList;
     const {success,error}=this.props.newProject;
@@ -141,8 +143,7 @@ class NewProject extends Component{
     const{project}=this.props.project;
 
     const {asyncValidating,handleSubmit,pristine, reset, submitting, invalid} = this.props;
-    console.log('props ' , this.props);
-    console.log('project ' , project);
+  //  console.log('projectname ' , this.props.project.project[0].ProjectName);
     return(
       <PageBase title={this.props.projectId ? "Edit Project" : "Add Project"}>
         <form onSubmit={ handleSubmit(this.validateAndSave) }>
