@@ -14,6 +14,7 @@ import RenderSearch from '../common/renderSearchField.jsx';
 import CircularProgress from 'material-ui/CircularProgress';
 import Close from 'material-ui/svg-icons/navigation/close';
 import Alert from '../common/renderAlert.jsx';
+import { Spinner } from 'react-redux-spinner';
 
 
 const styles = {
@@ -151,19 +152,12 @@ class ProjectList extends Component{
 
   render(){
     const { projects,error,loading,curPage } = this.props.projectList
-    if(loading){
-      return(
-        <div style={styles.container}>
-          <CircularProgress size={80} thickness={5} />
-        </div>)
-    }
-    else if(error){
-      {this.renderError(error)}
-    }
+
     return(
       <PageBase title="Project List">
         <div>
-        <Link to="/newproject" >
+          <Spinner />
+          <Link to="/newproject" >
           <FloatingActionButton style={styles.floatingActionButton}  iconStyle={{backgroundColor: blue700}}>
             <ContentAdd />
           </FloatingActionButton>

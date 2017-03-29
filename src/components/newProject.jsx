@@ -74,6 +74,10 @@ class NewProject extends Component{
 
   }
 
+  componentWillReceiveProps(nextProps){
+    this.props.dispatch(initialize('NewProject', nextProps.project));
+  }
+
   renderSource(source){
    return source.map((item)=>{
      return(
@@ -132,18 +136,11 @@ class NewProject extends Component{
     })
   }
 
-  formRender(values){
-    console.log('values ', values);
-  }
-
   render(){
     const {projectTypes}=this.props.projectTypeList;
     const {success,error}=this.props.newProject;
     const {isExist}=this.props.aysncValidate;
-    const{project}=this.props.project;
-
-    const {asyncValidating,handleSubmit,pristine, reset, submitting, invalid} = this.props;
-  //  console.log('projectname ' , this.props.project.project[0].ProjectName);
+    const {asyncValidating,handleSubmit,pristine, reset, submitting, invalid,project} = this.props;
     return(
       <PageBase title={this.props.projectId ? "Edit Project" : "Add Project"}>
         <form onSubmit={ handleSubmit(this.validateAndSave) }>
@@ -177,6 +174,6 @@ class NewProject extends Component{
 export default  reduxForm({
   form: 'NewProject',
   validate,
-  asyncValidate
+  //asyncValidate
 })(NewProject)
 

@@ -8,8 +8,7 @@ const mapStateToProps=(state,ownProps)=>{
     newProject:state.projects.newProject,
     aysncValidate:state.projects.aysncValidate,
     projectId:ownProps.id,
-    project:state.projects.projects,
-    initialValues: state.projects.projects
+    project:state.projects.project.projectData[0],
   }
 }
 
@@ -18,14 +17,20 @@ const mapDispatchToProps=(dispatch)=>{
 
     fetchProjectType:()=>{
       dispatch(fetchProjectType()).then((response)=>{
-        !response.error ? dispatch(fetchProjectTypeSuccess(response.value.data.objdata)):dispatch(fetchProjectTypeFailure(response.payload.data))
-      });
+        dispatch(fetchProjectTypeSuccess(response.value.data.objdata))
+      })
+      .catch((error)=>{
+        dispatch(fetchProjectTypeFailure(error))
+      })
     },
 
     fectchProjectById:(projectId)=>{
       dispatch(fectchProjectById(projectId))
         .then((response)=> {
-          !response.error ? dispatch(fetchProjectByIdSuccess(response.value.data.objdata)):dispatch(fetchProjectByIdFailure(response.payload.data))
+          dispatch(fetchProjectByIdSuccess(response.value.data.objdata))//dispatch(fetchProjectByIdFailure(response.payload.data))
+        })
+        .catch((error)=>{
+          dispatch(fetchProjectByIdFailure(error))
         })
     }
 

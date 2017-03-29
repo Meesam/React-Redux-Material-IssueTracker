@@ -7,6 +7,7 @@ import { reducer as formReducer}  from 'redux-form'
 import DataReducer from './dataReducer.jsx';
 import SystemUserReducer from './userReducer.jsx';
 import Alert from './alertReducer.jsx';
+import { pendingTasksReducer as pendingTasks } from 'react-redux-spinner';
 
 const rootReducer = combineReducers({
   user : UserReducer,
@@ -15,6 +16,7 @@ const rootReducer = combineReducers({
   data:DataReducer,
   systemUser:SystemUserReducer,
   alert:Alert,
+  pendingTasks,
   form: formReducer ,
   routing: routerReducer
 });

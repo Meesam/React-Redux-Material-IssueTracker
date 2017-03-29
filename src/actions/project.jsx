@@ -1,5 +1,12 @@
   import axios from 'axios';
   import URL from '../../appconfig';
+  import {
+    Spinner, // The React component
+    pendingTasksReducer, // The redux reducer
+    pendingTask, // The action key for modifying loading state
+    begin, // The action value if a "long" running task begun
+    end // The action value if a "long" running task ended
+  } from 'react-redux-spinner';
 
   export const FETCH_PROJECT = "FETCH_PROJECT" ;
   export const FETCH_PROJECT_SUCCESS = "FETCH_PROJECT_SUCCESS";
@@ -35,7 +42,8 @@
     });
     return{
       type:FETCH_PROJECT,
-      payload:request
+      payload:request,
+      [ pendingTask ]: begin
     }
   }
 
@@ -44,7 +52,8 @@
       type:FETCH_PROJECT_SUCCESS,
       payload:{
         projects:projects,
-        curPage:curpage
+        curPage:curpage,
+        [ pendingTask ]: end
       }
     }
   }
