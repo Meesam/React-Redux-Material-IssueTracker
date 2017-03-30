@@ -60,22 +60,6 @@ class NewProject extends Component{
 
   constructor(props) {
     super(props);
-    this.validateAndSave = this.validateAndSave.bind(this);
-  }
-
-  componentWillMount(){
-    this.props.fetchProjectType();
-    if(this.props.projectId){
-      this.props.fectchProjectById(this.props.projectId);
-    }
-  }
-
-  componentDidMount(){
-
-  }
-
-  componentWillReceiveProps(nextProps){
-    this.props.dispatch(initialize('NewProject', nextProps.project));
   }
 
   renderSource(source){
@@ -124,33 +108,22 @@ class NewProject extends Component{
       return(<Alert  {...props} />);
     }
   }
-
-  validateAndSave(values,dispatch) {
-    return dispatch(addProject(values)).
-    then((response)=> {
-       dispatch(addProjectSuccess(response.value.data.objdata));
-      this.props.dispatch(initialize('NewProject', {}));
-    })
-    .catch((error)=>{
-       dispatch(addProjectFailue(error))
-    })
-  }
-
   render(){
-    const {projectTypes}=this.props.projectTypeList;
+    /*const {projectTypes}=this.props.projectTypeList;
     const {success,error}=this.props.newProject;
-    const {isExist}=this.props.aysncValidate;
+    const {isExist}=this.props.aysncValidate;*/
     const {asyncValidating,handleSubmit,pristine, reset, submitting, invalid,project} = this.props;
+    console.log('project on form ', project);
     return(
-      <PageBase title={this.props.projectId ? "Edit Project" : "Add Project"}>
-        <form onSubmit={ handleSubmit(this.validateAndSave) }>
-          {this.renderNotification(success)}
-          {this.renderError(error)}
-          {this.renderAsyncValidationError(isExist)}
-          <Field name="ProjectName" type="text" label="Project Title" fullWidth={true} component={renderTextField} />
+      <PageBase title= "Add Project">
+        <form onSubmit={ handleSubmit(this.props.onSubmit) }>
+          {/*{this.renderNotification(success)}
+          this.renderError(error)
+          this.renderAsyncValidationError(isExist)*/}
+          <Field name="ProjectName" value={project.ProjectName} type="text" label="Project Title" fullWidth={true} component={renderTextField} />
 
           <Field name="ProjectType" label="Project Type" fullWidth={true} component={renderSelectField}>
-            {this.renderSource(projectTypes)}
+           {this.renderSource(this.props.projectType)}
           </Field>
 
           <Field name="StartDate" label="Start Date" fullWidth={true} component={renderDateField} />
