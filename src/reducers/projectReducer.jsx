@@ -4,7 +4,7 @@ import { FETCH_PROJECT,FETCH_PROJECT_SUCCESS,FETCH_PROJECT_FAILURE,RESETS_PROJEC
 
 const INITIAL_STATE={
   projectList:{projects:[],curPage:1,error:null,loading:false},
-  project:{projectData:{},error:null,loading:false},
+  project:{projectData:[{_id:'',ProjectName:'',ProjectType:'',StartDate:'',EndDate:'',Description:''}],error:null,loading:false},
   newProject:{success:null,error:null,loading:false},
   projectTypeList:{projectTypes:[],error:null,loading:false},
   aysncValidate:{isExist:null,error:null,loading:false}
@@ -40,14 +40,14 @@ export default function (state=INITIAL_STATE,action) {
       return {...state,projects:[],error:null,loading:false};
 
     case FETCH_PROJECT_BY_ID:
-      return {...state , projects:{projectData:null,error:null,loading:true}};
+      return {...state , projects:{projectData:[{_id:'',ProjectName:'',ProjectType:'',StartDate:'',EndDate:'',Description:''}],error:null,loading:true}};
 
     case FETCH_PROJECT_BY_ID_SUCCESS:
       return {...state , project:{projectData:action.payload,error:null,loading:false}};
 
     case FETCH_PROJECT_BY_ID_FAILURE:
       error = action.payload || {message: action.payload.message};
-      return {...state , project:{projectData:null,error:error,loading:false}};
+      return {...state , project:{projectData:[{_id:'',ProjectName:'',ProjectType:'',StartDate:'',EndDate:'',Description:''}],error:error,loading:false}};
 
     case ADD_PROJECT:
       return {...state , newProject:{success:null,error:null,loading:true}};

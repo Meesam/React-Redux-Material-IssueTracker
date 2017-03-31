@@ -13,6 +13,7 @@ import Done from 'material-ui/svg-icons/action/done';
 import Close from 'material-ui/svg-icons/navigation/close';
 import moment from 'moment'
 import Alert from '../common/renderAlert.jsx';
+import TextField from 'material-ui/TextField';
 
 const styles = {
   toggleDiv: {
@@ -113,14 +114,15 @@ class NewProject extends Component{
     const {success,error}=this.props.newProject;
     const {isExist}=this.props.aysncValidate;*/
     const {asyncValidating,handleSubmit,pristine, reset, submitting, invalid,project} = this.props;
-    console.log('project on form ', project);
+     //console.log('project on form ', this.props);
     return(
       <PageBase title= "Add Project">
         <form onSubmit={ handleSubmit(this.props.onSubmit) }>
           {/*{this.renderNotification(success)}
           this.renderError(error)
           this.renderAsyncValidationError(isExist)*/}
-          <Field name="ProjectName" value={project.ProjectName} type="text" label="Project Title" fullWidth={true} component={renderTextField} />
+          <Field name="ProjectName" type="text" label="Project Title" fullWidth={true} component={renderTextField} />
+          {/*<TextField hintText="Project Name" name="ProjectName" value={project.ProjectName} fullWidth={true} floatingLabelText="Project Name" />*/}
 
           <Field name="ProjectType" label="Project Type" fullWidth={true} component={renderSelectField}>
            {this.renderSource(this.props.projectType)}
