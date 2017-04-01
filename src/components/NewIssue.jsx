@@ -8,11 +8,13 @@ import { reduxForm, Field, SubmissionError , initialize } from 'redux-form';
 import { renderTextField }   from '../common/renderTextField.jsx';
 import { renderSelectField } from '../common/renderSelectField.jsx';
 import {renderDateField} from '../common/renderDateField.jsx';
-import {addProject,addProjectSuccess,addProjectFailue,asyncValidation,asyncValidateSuccess,asyncValidateFailure} from '../actions/project.jsx';
+import {addIssue,addIssueSuccess,addIssueFailure} from '../actions/issues.jsx';
 import Done from 'material-ui/svg-icons/action/done';
 import Close from 'material-ui/svg-icons/navigation/close';
 import moment from 'moment'
 import Alert from '../common/renderAlert.jsx';
+import {ListItem ,List}from 'material-ui/List';
+import ContentDrafts from 'material-ui/svg-icons/content/drafts';
 
 const styles = {
   toggleDiv: {
@@ -46,14 +48,14 @@ const validate = values => {
 
 const asyncValidate=(values,dispatch)=> {
   return dispatch(asyncValidation(values.ProjectName)).then((response)=>{
-        dispatch(asyncValidateSuccess(response.value.data.Count==0?false:true));
-     })
+    dispatch(asyncValidateSuccess(response.value.data.Count==0?false:true));
+  })
     .catch((error)=>{
       dispatch(asyncValidateFailure(error));
     });
 };
 
-class NewProject extends Component{
+class NewIssue extends Component{
   static contextTypes = {
     router: PropTypes.object
   };
@@ -64,37 +66,55 @@ class NewProject extends Component{
   }
 
   componentWillMount() {
-    this.props.fetchProjectType();
+    this.props.fetchProject();
   }
 
-  componentDidMount(){
-    if(this.props.projectId){
-      this.props.fectchProjectById(this.props.projectId);
-      this.props.dispatch(initialize('NewProject',this.props.initailValues));
-    } else {
-      this.props.dispatch(initialize('NewProject',{}));
-    }
+  renderSprint(){
+    let source=[{_id:1,Title:'Sprint 1'},{_id:2,Title:'Sprint 2'},{_id:3,Title:'Sprint 3'}]
+    return source.map((item)=>{
+      return(
+        <MenuItem key={item._id} value={item.Title} primaryText={item.Title} />
+      )
+    })
   }
 
-  renderSource(source){
-   return source.map((item)=>{
-     return(
-       <MenuItem key={item._id} value={item.Title} primaryText={item.Title} />
-     )
-   })
+  renderIssueType(){
+    let source=[{_id:1,Title:'Bug'},{_id:2,Title:'Story'},{_id:3,Title:'Task'}]
+    return source.map((item)=>{
+      return(
+        <MenuItem key={item._id} value={item.Title} primaryText={item.Title} />
+      )
+    })
+  }
+
+  renderPriority(){
+    let source=[{_id:1,Title:'High'},{_id:2,Title:'Medium'},{_id:3,Title:'Low'}]
+    return source.map((item)=>{
+      return(
+        <MenuItem key={item._id} value={item.Title} primaryText={item.Title} />
+      )
+    })
+  }
+
+  renderProject(source){
+    return source.map((item)=>{
+      return(
+        <MenuItem key={item._id} value={item._id} primaryText={item.ProjectName} />
+      )
+    })
   }
 
   renderNotification(success){
-   let props={
-     alertType:'success',
-     alertIcon:<Done />,
-     iconColor:green700,
-     alertMsg:success,
-     title:"Success"
-   };
-   if(success){
-     return(<Alert  {...props} />);
-   }
+    let props={
+      alertType:'success',
+      alertIcon:<Done />,
+      iconColor:green700,
+      alertMsg:success,
+      title:"Success"
+    };
+    if(success){
+      return(<Alert  {...props} />);
+    }
   }
 
   renderError(error){
@@ -124,46 +144,58 @@ class NewProject extends Component{
   }
 
   validateAndSave(values,dispatch) {
-    if(!this.props.projectId){
-      return dispatch(addProject(values)).
+    console.log('values are ' ,values);
+    if(!this.props.issueId){
+      return dispatch(addIssue(values)).
       then((response)=> {
-        dispatch(addProjectSuccess(response.value.data.objdata));
-        this.props.dispatch(initialize('NewProject',{}));
+        dispatch(addIssueSuccess(response.value.data.objdata));
+        this.props.dispatch(initialize('NewIssue',{}));
       })
         .catch((error)=>{
-          dispatch(addProjectFailue(error))
+          dispatch(addIssueFailure(error))
         })
     }
     else {
-     console.log('values are ' ,values);
+      console.log('values are ' ,values);
     }
 
   }
   render(){
-    const {projectTypes}=this.props.projectTypeList;
-    const {success,error}=this.props.newProject;
-    const {isExist}=this.props.aysncValidate;
+    const {success,error}=this.props.newIssue;
+    const { projects} = this.props.projectList;
     const {asyncValidating,handleSubmit,pristine, reset, submitting, invalid} = this.props;
     return(
-      <PageBase title= {this.props.projectId?"Edit Project":"Add Project"}>
+      <PageBase title= {this.props.issueId?"Edit Issue":"Add Issue"}>
         <form onSubmit={ handleSubmit(this.validateAndSave) }>
           {this.renderNotification(success)}
           {this.renderError(error)}
-          { this.renderAsyncValidationError(isExist)}
-          <Field name="ProjectName" type="text" label="Project Title" fullWidth={true} component={renderTextField} />
 
-          <Field name="ProjectType" label="Project Type" fullWidth={true} component={renderSelectField}>
-           {this.renderSource(projectTypes)}
+          <Field name="Project" label="Project" fullWidth={true} component={renderSelectField}>
+            {this.renderProject(projects)}
+          </Field>
+
+          <Field name="IssueTitle" type="text" label="Issue Title" fullWidth={true} component={renderTextField} />
+
+          <Field name="IssueType" label="Issue Type" fullWidth={true} component={renderSelectField}>
+            {this.renderIssueType()}
+          </Field>
+
+          <Field name="Priority" label="Priority" fullWidth={true} component={renderSelectField}>
+            {this.renderPriority()}
           </Field>
 
           <Field name="StartDate" label="Start Date" fullWidth={true} component={renderDateField} />
 
-          <Field name="EndDate" label="End Date" fullWidth={true} component={renderDateField} />
+          <Field name="Sprint" label="Sprint" fullWidth={true} component={renderSelectField}>
+            {this.renderSprint()}
+          </Field>
+
+          <Field name="Lable" type="text" label="Lable" fullWidth={true} component={renderTextField} />
 
           <Field name="Description" type="text" label="Description" fullWidth={true} component={renderTextField} />
 
           <div style={styles.buttons}>
-            <Link to="/project">
+            <Link to="/issues">
               <RaisedButton label="Cancel"/>
             </Link>
             <RaisedButton  label="Save" style={styles.saveButton} disabled={ invalid || submitting } type="submit" primary={true}/>
@@ -175,8 +207,8 @@ class NewProject extends Component{
 }
 
 export default  reduxForm({
-  form: 'NewProject',
-  fields: ['_id','ProjectName','ProjectType','StartDate','EndDate','Description'],
+  form: 'NewIssue',
+  fields:['_id','IssueTitle','IssueType','Priority','StartDate','Sprint','Lable','Description'],
   validate
-})(NewProject)
+})(NewIssue)
 

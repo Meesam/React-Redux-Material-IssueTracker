@@ -15,11 +15,9 @@ export default function (state=INITIAL_STATE,action) {
   switch(action.type){
 
     case FETCH_PROJECT:
-      console.log('state ' , state)
       return{...state,projectList:{projects:[],curPage:1,error:null,loading:true}};
 
     case FETCH_PROJECT_SUCCESS:
-      console.log('state ' , state)
       return{...state,projectList:{projects:action.payload.projects,curPage:action.payload.curPage,error:null,loading:false}};
 
     case FETCH_PROJECT_FAILURE:
@@ -40,7 +38,7 @@ export default function (state=INITIAL_STATE,action) {
       return {...state,projects:[],error:null,loading:false};
 
     case FETCH_PROJECT_BY_ID:
-      return {...state , projects:{projectData:null,error:null,loading:true}};
+      return {...state , project:{projectData:null,error:null,loading:true}};
 
     case FETCH_PROJECT_BY_ID_SUCCESS:
       return {...state , project:{projectData:action.payload,error:null,loading:false}};

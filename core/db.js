@@ -40,7 +40,8 @@ require('../models/userModel');
 require('../models/appMenuModel');
 require('../models/projectModel');
 require('../models/userDetailModel');
-  require('../models/projectTypeModel');
+require('../models/issueModel');
+require('../models/projectTypeModel');
 })();
 
 
@@ -54,10 +55,10 @@ exports.runSql=function(sqlqury,callback) {
 		let sqlrequest=new mssql.Request(conn);
 		sqlrequest.query(sqlqury,function(err,recordset){
              if(err){
-                callback(null,err);  	
+                callback(null,err);
              }
              else{
-             	callback(recordset);  	
+             	callback(recordset);
              }
 		});
 

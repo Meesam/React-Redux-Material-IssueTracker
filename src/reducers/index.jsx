@@ -1,9 +1,10 @@
 import { combineReducers } from 'redux';
-import { routerReducer } from 'react-router-redux'
+import { routerReducer } from 'react-router-redux';
 import UserReducer from './loginReducer.jsx';
-import ProjectReducer from './projectReducer.jsx'
-import ModulesReducer from './modulesReducer.jsx'
-import { reducer as formReducer}  from 'redux-form'
+import ProjectReducer from './projectReducer.jsx';
+import ModulesReducer from './modulesReducer.jsx';
+import IssueReducer from './issueReducer.jsx';
+import { reducer as formReducer}  from 'redux-form';
 import DataReducer from './dataReducer.jsx';
 import SystemUserReducer from './userReducer.jsx';
 import Alert from './alertReducer.jsx';
@@ -15,6 +16,7 @@ const rootReducer = combineReducers({
   modules:ModulesReducer,
   data:DataReducer,
   systemUser:SystemUserReducer,
+  issues:IssueReducer,
   alert:Alert,
   pendingTasks,
   form: formReducer ,
