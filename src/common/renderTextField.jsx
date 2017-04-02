@@ -4,8 +4,7 @@ import TextField from 'material-ui/TextField';
 
 export const renderTextField = ({input, label,meta: {touched, error}, ...custom}) => (
 <div>
-  {JSON.stringify(input)+ ' avl'}
-  <TextField hintText={label} floatingLabelText={label} errorText={touched && error} value={input.value}
+  <TextField hintText={label} floatingLabelText={label} errorText={touched && error}
              {...input}
              {...custom}
   />

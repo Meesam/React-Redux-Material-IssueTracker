@@ -12,16 +12,11 @@ class PageBase extends Component{
     const {title, navigation} = this.props;
     return(
       <div>
-        <span style={globalStyles.navigation}>{navigation}</span>
-
         <Paper style={globalStyles.paper} zDepth={3}>
           <h3 style={globalStyles.title}>{title}</h3>
-
           <Divider/>
           {this.props.children}
-
           <div style={globalStyles.clear}/>
-
         </Paper>
       </div>
     )

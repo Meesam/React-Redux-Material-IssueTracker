@@ -4,7 +4,7 @@ import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import {pink500, grey200, grey500,blue700,red700} from 'material-ui/styles/colors';
 import PageBase from '../common/renderPageBase.jsx';
-import RenderList from '../common/renderList.jsx';
+import RenderIssueList from '../components/renderIssueList.jsx';
 import Pagination from '../common/renderPagination.jsx';
 import ProjectSort from './projectSortOptions.jsx';
 import moment from 'moment';
@@ -15,6 +15,7 @@ import CircularProgress from 'material-ui/CircularProgress';
 import Close from 'material-ui/svg-icons/navigation/close';
 import Alert from '../common/renderAlert.jsx';
 import { Spinner } from 'react-redux-spinner';
+import IssueDetail from '../components/renderIssueDetails.jsx';
 
 
 const styles = {
@@ -80,7 +81,7 @@ class IssueList extends Component{
     super(props)
     this.moveNext=this.moveNext.bind(this);
     this.movePrev=this.movePrev.bind(this);
-    this.renderSource=this.renderSource.bind(this);
+    this.onIssueSelect=this.onIssueSelect.bind(this);
   }
 
   componentWillMount(){
@@ -101,10 +102,6 @@ class IssueList extends Component{
       RPP:5,
     }
     this.props.fetchIssues(pageInfo);
-  }
-
-  renderSource(){
-    return [{_id:1,Title:'Internal'},{_id:2,Title:'External'}]
   }
 
   searchOption=[
@@ -146,10 +143,23 @@ class IssueList extends Component{
     }
   }
 
+  onIssueSelect(id){
+    if(id){
+      this.props.fetchIssueById(id);
+    }
+  }
+
+  renderIssueDetail(issueDetail){
+    if(issueDetail){
+      return (<IssueDetail issueData={issueDetail} />)
+    } else {
+      return(<span></span>)
+    }
+  }
+
   render(){
     const { issues,error,loading,curPage } = this.props.issuesList;
-    console.log('issues ' , issues);
-
+    const {issueDetails}=this.props;
     return(
       <PageBase title="Issue List">
         <div>
@@ -162,23 +172,20 @@ class IssueList extends Component{
           <div className="row">
             <div className="col-xs-12 col-sm-5 col-md-5 col-lg-3 m-b-15 ">
               <div className="row">
-                <div className="col-xs-12 col-sm-5 col-md-5 col-lg-12 m-b-15 ">
-                  <RenderSearch searchOption={this.searchOption} onSearch={searchIssue} />
+                <div className="col-xs-12 col-sm-5 col-md-5 col-lg-12 m-b-15">
+                  <RenderIssueList listTitle="Issue List" data={this.makeIssueData(issues)} onSelect={this.onIssueSelect} />
                 </div>
-              </div>
-              <div className="row-fluid">
-                <ProjectSort />
               </div>
             </div>
             <div className="col-xs-12 col-sm-10 col-md-10 col-lg-9 m-b-15 ">
               <div className="row">
-                <RenderList listTitle="Issue List" data={this.makeIssueData(issues)} />
+                {this.renderIssueDetail(issueDetails)}
               </div>
-              <div className="row">
+{/*              <div className="row">
                 <div className="col-xs-12 col-sm-6 col-md-6 col-lg-3 m-b-15">
                   <Pagination pageInfo={aTableInfo} moveNext={this.moveNext} movePrev={this.movePrev}  />
                 </div>
-              </div>
+              </div>*/}
             </div>
           </div>
         </div>

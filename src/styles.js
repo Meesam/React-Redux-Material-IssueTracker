@@ -19,6 +19,9 @@ const styles = {
   },
   clear: {
     clear: 'both'
+  },
+  label:{
+    color:grey600
   }
 };
 
