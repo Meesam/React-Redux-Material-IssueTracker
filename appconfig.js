@@ -14,6 +14,6 @@ exports.ROOT_URL = 'http://localhost:9000/api';
  }*/
 
 // This setting For MongoDb
-exports.dbUrl='mongodb://localhost:27017/issueTrackerDb';
+exports.dbUrl='mongodb://localhost:27017/IssueTrackerDb';
 
 exports.secretkey = 'thisissecretkey';

@@ -163,7 +163,6 @@ class IssueList extends Component{
     return(
       <PageBase title="Issue List">
         <div>
-          <Spinner />
           <Link to="/newissue" >
             <FloatingActionButton style={styles.floatingActionButton}  iconStyle={{backgroundColor: blue700}}>
               <ContentAdd />

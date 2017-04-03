@@ -4,12 +4,20 @@ import Close from 'material-ui/svg-icons/navigation/close';
 import {grey600,green700,white,red700} from 'material-ui/styles/colors';
 import TextField from 'material-ui/TextField';
 
+const styles={
+  span:{
+    textAlign:'left'
+  }
+}
+
 class EditableInput extends Component{
   constructor(props){
     super(props)
     this.state={
       isEdit:false,
-      value:this.props.text
+      value:this.props.text,
+      hasError:false,
+      error:""
     }
     this.changeView=this.changeView.bind(this)
     this.onTextChange=this.onTextChange.bind(this);
@@ -17,9 +25,19 @@ class EditableInput extends Component{
   }
 
   changeView(){
-    this.setState({
-      isEdit:this.state.isEdit ? false:true
-    })
+    debugger;
+    if(this.state.hasError){
+      this.setState({
+        isEdit:true,
+        hasError:true
+      })
+    }else {
+      this.setState({
+        isEdit:this.state.isEdit ? false:true,
+        hasError:false
+      })
+    }
+
   }
 
   getDoneIcon(){
@@ -47,9 +65,9 @@ class EditableInput extends Component{
         }
       })
     iconEl =
-      <div style={leftIconBodyStyle}>
+      <span style={leftIconBodyStyle}>
         {leftIcon}
-      </div>
+      </span>
     return iconEl;
   }
 
@@ -79,18 +97,25 @@ class EditableInput extends Component{
       }
     })
     iconEl =
-      <div style={leftIconBodyStyle}>
+      <span style={leftIconBodyStyle}>
         {leftIcon}
-      </div>
+      </span>
     return iconEl;
   }
 
   onTextChange(event){
-     this.setState({
-        value:event.target.value
-     })
+    if(event.target.value==""){
+      this.setState({
+        error:"Value Required",
+        hasError:true
+      })
+    }else {
+      this.setState({
+        value:event.target.value,
+        hasError:false
+      })
+    }
   }
-
   setValue(){
     this.setState({
       value:this.state.value
@@ -100,14 +125,11 @@ class EditableInput extends Component{
   render(){
     if(this.state.isEdit){
       return (
-      <div>
-        <div className="row-fluid">
-          <TextField name={this.props.name} value={this.state.value} floatingLabelText={this.props.label} hintText={this.props.label} onChange={this.onTextChange} onBlur={this.changeView} />
-        </div>
-        <div className="row-fluid">
-          {this.getDoneIcon()} {this.getCloseIcon()}
-        </div>
-      </div>
+      <span>
+        <span>
+          <TextField name={this.props.name} value={this.state.value} errorText={this.state.error} hintText={this.props.label} onChange={this.onTextChange} onBlur={this.changeView} />
+        </span>
+      </span>
       )
     } else {
       return (
