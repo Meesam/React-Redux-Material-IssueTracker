@@ -105,15 +105,17 @@ class NewIssue extends Component{
   }
 
   renderNotification(success){
-    let props={
-      alertType:'success',
-      alertIcon:<Done />,
-      iconColor:green700,
-      alertMsg:success,
-      title:"Success"
-    };
-    if(success){
-      return(<Alert  {...props} />);
+    if(success===200){
+      let props={
+        alertType:'success',
+        alertIcon:<Done />,
+        iconColor:green700,
+        alertMsg:"Record added successfully",
+        title:"Success"
+      };
+      if(success){
+        return(<Alert  {...props} />);
+      }
     }
   }
 
@@ -144,11 +146,10 @@ class NewIssue extends Component{
   }
 
   validateAndSave(values,dispatch) {
-    console.log('values are ' ,values);
     if(!this.props.issueId){
       return dispatch(addIssue(values)).
       then((response)=> {
-        dispatch(addIssueSuccess(response.value.data.objdata));
+        dispatch(addIssueSuccess(response.value.status));
         this.props.dispatch(initialize('NewIssue',{}));
       })
         .catch((error)=>{

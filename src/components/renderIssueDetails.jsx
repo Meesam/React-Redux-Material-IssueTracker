@@ -12,6 +12,7 @@ import globalStyles from '../styles';
 import Subheader from 'material-ui/Subheader';
 import IssueActivity from './renderIssueActivity.jsx';
 import IssueAttachments from './renderIssueAttachment.jsx';
+import EditableInput from '../common/editableInput.jsx';
 
 const styles = {
   paper:{
@@ -118,19 +119,19 @@ class IssueDetails extends Component{
                  <div className="col-md-12">
                   <span style={globalStyles.label}>IssueType</span> : {issueData.IssueType} &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
                    <span style={globalStyles.label}>Priority</span> : {issueData.Priority} &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-                   <span style={globalStyles.label}>Lables</span> : {issueData.Lable} &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-                   <span style={globalStyles.label}>Sprint</span> : {issueData.Sprint} &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-                   <span style={globalStyles.label}>Project</span> : {issueData.Project}
+                   <span style={globalStyles.label}>Lables</span> :   <EditableInput text={issueData.Lable} name="Lable" label="Lable" />
+                   {/*<span style={globalStyles.label}>Sprint</span> : {issueData.Sprint} &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                   <span style={globalStyles.label}>Project</span> : {issueData.Project}*/}
                  </div>
                </div>
               <br />
               <div className="row-fluid">
                 <div className="col-md-12">
-                  <span style={globalStyles.label}>Status</span> : In Progress &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-                  <span style={globalStyles.label}>Resolution</span> : Un Resolved &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-                  <span style={globalStyles.label}>Reporter</span> : Meesam &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-                  <span style={globalStyles.label}>Assignee</span> : Meesam &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-                  <span style={globalStyles.label}>Watchers</span> : (0)
+                  <span style={globalStyles.label}>Status</span> : {issueData.Status} &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                  <span style={globalStyles.label}>Resolution</span> : {issueData.Resolution} &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                  <span style={globalStyles.label}>Reporter</span> : {issueData.Reporter} &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                  <span style={globalStyles.label}>Assignee</span> : {issueData.Assignee} &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                  <span style={globalStyles.label}>Watchers</span> : ({issueData.Watchers.length})
                 </div>
               </div>
               </div>

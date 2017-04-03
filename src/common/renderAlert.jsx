@@ -45,7 +45,6 @@ class Alert extends Component{
         {leftIcon}
       </div>
     return iconEl;
-
   }
 
   componentWillMount(){

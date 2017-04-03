@@ -1,11 +1,12 @@
-let appconfig=require('../../appconfig');
-let globalobj=require('../../core/global');
-let util=require('util');
-let mongoose=require('mongoose');
-let Issues = mongoose.model('Issues');
+const appconfig=require('../../appconfig');
+const globalobj=require('../../core/global');
+const util=require('util');
+const mongoose=require('mongoose');
+const Issues = mongoose.model('Issues');
+const execPromise=require('../../core/execPromise');
 
 
-exports.getAllIssues=function(aTableInfo,callback){
+function getAllIssues(aTableInfo,callback){
   let totalRecord=null;
   let perPage = aTableInfo.RPP
     , page = Math.max(0, aTableInfo.CurPage);
@@ -28,23 +29,17 @@ exports.getAllIssues=function(aTableInfo,callback){
   }).skip(perPage * (page-1)).limit(perPage).sort('IssueTitle');
 };
 
-exports.addIssue=function(issuedetails,callback){
-  let issue=new Issues(issuedetails);
-  issue.save(function(err){
-    if(err)
-      callback(null,err);
-    else{
-      let obj={
-        status:'success',
-        count:0,
-        data:'Record add successfully'
-      };
-      callback(globalobj.globalObject(obj));
-    }
-  });
-};
 
-exports.getIssueById=function(issueId,callback){
+function addIssue(issuedetails) {
+  issuedetails.Status="Open";
+  issuedetails.Resolution="Unresolved";
+  issuedetails.Reporter="Meesam";
+  issuedetails.Assignee="Meesam";
+  let issue=new Issues(issuedetails);
+  return issue.savePromise();
+}
+
+function getIssueById(issueId,callback){
   if(issueId==0)
     callback(null,err);
   else{
@@ -63,7 +58,7 @@ exports.getIssueById=function(issueId,callback){
   }
 };
 
-exports.getSearchIssue=function(aTableInfo,callback){
+function getSearchIssue(aTableInfo,callback){
   let totalRecord=null;
   let perPage = aTableInfo.RPP
     , page = Math.max(0, aTableInfo.CurPage);
@@ -95,3 +90,10 @@ exports.getSearchIssue=function(aTableInfo,callback){
     }
   }).skip(perPage * (page-1)).limit(perPage).sort('IssueTitle');
 };
+
+module.exports={
+  addIssue:addIssue,
+  getSearchIssue:getSearchIssue,
+  getIssueById:getIssueById,
+  getAllIssues:getAllIssues
+}

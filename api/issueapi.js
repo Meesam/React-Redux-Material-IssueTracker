@@ -19,17 +19,16 @@
   });
 
   // Add Issues
-  apiRoutes.post('/issues/add',function(req,resp,next){
-    issues.addIssue(req.body,function(data,err){
-      if(err) {
+  apiRoutes.post('/issues/add',function (req,resp,next) {
+    let issuedetails=req.body;
+    issues.addIssue(issuedetails).
+      then(function (result) {
+        resp.json(result);
+      })
+      .catch(function (err) {
         return next(err);
-      }
-      else {
-        resp.json(data);
-      }
-    });
-  });
-
+      })
+  })
 
   // Issue Search
   apiRoutes.post('/issues/search',function (req,resp,next) {
